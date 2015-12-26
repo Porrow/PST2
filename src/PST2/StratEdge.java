@@ -43,13 +43,19 @@ public class StratEdge extends PApplet
             black[i] = new Piece(PN[INIT[i]], i % 8, j / 8 + 6, tabImg[INIT[i] + 6]);
         }
     }
-
+    
+    @Override
+    public void settings()
+    {
+        size(650, 650);                                                        //Taille de la fenêtre
+        //fullScreen();                                                           //Plein écran
+    }
+    
     @Override
     public void setup() 
     {
         loadImages();                                                           //Charge l'intégralité des images
         createArmies();                                                         //Initialise les armées
-        size (650, 650);                                                        //Taille de la fenêtre
         background (255, 255, 255);                                             //Couleur d'arrière plan dans la fenêtre
         stroke (0, 0, 0);                       
         rectMode (CENTER);

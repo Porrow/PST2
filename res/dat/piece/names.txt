@@ -1,0 +1,6 @@
+Roi
+Reine
+Fou
+Chevalier
+Tour
+Pion

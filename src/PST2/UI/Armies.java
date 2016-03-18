@@ -1,5 +1,6 @@
 package PST2.UI;
 
+import PST2.Piece.Piece;
 import PST2.*;
 
 import static PST2.Game.C;
@@ -30,13 +31,13 @@ public class Armies extends GraphicObject
                 for(int j = 0; j < pMoves[i].length; j++)
                     if(pMoves[i][j])
                     {
-                        System.out.println("i : "+i+" ;j : "+j);
+                        //System.out.println("i : "+i+" ;j : "+j);
                         se.g.noStroke();
                         if(game.getSelection().getTeam() == 0)
                             se.g.fill(0, 150, 0, 70);
                         else
                             se.g.fill(150, 0, 0, 70);
-                        ellipse(j * w/C + w/C/2, i * w/C + w/C/2, 50, 50);//j * w/C + w*2/C //w*(j+2) / C
+                        ellipse(j * w/C + w/C/2, i * w/C + w/C/2, 50, 50);
                     }
         }
         

@@ -1,5 +1,6 @@
 package PST2;
 
+import PST2.Piece.Piece;
 import PST2.UI.*;
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ public class Game
     private static final int[] INIT = {4, 3, 2, 0, 1, 2, 3, 4,                  //Positions initiales des pièces
                                        5, 5, 5, 5, 5, 5, 5, 5};
     
-    private GraphicObject[] tabGO = new GraphicObject[2];                       //Tableau contenant tous les objets graphiques sur la view jeu
+    private GraphicObject[] tabGO = new GraphicObject[3];                       //Tableau contenant tous les objets graphiques sur la view jeu
     
     private ArrayList<Piece> team1 = new ArrayList<>();                         //Piece de l'équipe 1
     private ArrayList<Piece> team2 = new ArrayList<>();                         //Piece de l'équipe 2
@@ -41,6 +42,7 @@ public class Game
     {
         tabGO[0] = new Checker(se, (se.getW()-Checker.W) / 2, (se.getH()-Checker.W) / 2);
         tabGO[1] = new Armies(se, (se.getW()-Checker.W) / 2, (se.getH()-Checker.W) / 2);
+        tabGO[2] = new Debug(se, 3, 3, 50, 40);
     }
     
     /*Getters*/

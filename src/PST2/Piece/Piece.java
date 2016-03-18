@@ -1,4 +1,4 @@
-package PST2;
+package PST2.Piece;
 
 import PST2.IO.Read;
 
@@ -40,7 +40,7 @@ public class Piece
     private boolean[][] pMoves = new boolean[C][C];                             //Mouvements possibles de la pièce
     
     /*Constructeur*/
-    protected Piece(String NAME, int type, int team, int image, int attaque, int defense, int life, int x, int y)
+    public Piece(String NAME, int type, int team, int image, int attaque, int defense, int life, int x, int y)
     {
         this.NAME = NAME;
         this.type = type;
@@ -107,8 +107,8 @@ public class Piece
                 testDirection(dir, moves[dir], moves[dir], checker);
         return pMoves;
     }
-    protected static int[][] getPieces(){return TABPIECES;}
-    protected static String[] getNames(){return TABNAMES;}
+    public static int[][] getPieces(){return TABPIECES;}
+    public static String[] getNames(){return TABNAMES;}
     
     /*Setters*/
     public void setType(int nType){type = nType;}

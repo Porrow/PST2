@@ -62,6 +62,11 @@ public abstract class GraphicObject extends Thread
         se.g.ellipse(x + rx, y + ry, w, h);
     }
     
+    protected void text(String txt, int rx, int ry)
+    {
+        se.g.text(txt, x + rx, y + ry);
+    }
+    
     /*Getters*/
     public int getX(){return x;}
     public int getY(){return y;}

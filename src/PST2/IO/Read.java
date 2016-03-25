@@ -1,14 +1,15 @@
 package PST2.IO;
 
+import PST2.StratEdge;
 import processing.core.PApplet;
 
 public class Read
 {
     private final PApplet p;
     
-    public Read(PApplet p)
+    public Read()
     {
-        this.p = p;
+        p = StratEdge.getSE();
     }
     
     public int[][] matrixTextFile(String path)                                  //Charge un fichier texte constitué de nombres et dont la disposition s'effectue en matrice

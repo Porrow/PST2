@@ -81,6 +81,6 @@ public abstract class GraphicObject extends Thread
     
     /*Abstract methods*/
     public abstract void draw();                                                //On dessine le composant à l'aide de processing
-    public abstract void mouseClicked(int x, int y);                            //Gestion des clics de souris
+    public abstract void mousePressed(int x, int y);                            //Gestion des clics de souris
     public abstract void mouseMoved(int x, int y);                              //Gestion du mouvement de la souris
 }

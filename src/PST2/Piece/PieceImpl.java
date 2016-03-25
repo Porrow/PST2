@@ -4,8 +4,19 @@ import PST2.IO.Read;
 
 import static PST2.Game.C;
 
-public class SEPiece implements Piece
+/*Cette classe permet de créer une pièce avec la majorité de ses attributs*/
+
+public class PieceImpl
 {
+    /*Constantes static*/
+    protected static final int ROI = 0, REINE = 1, FOU = 2;                     //Types
+    protected static final int CHEVALIER = 3, TOUR = 4, PION = 5;               // autorisées
+    protected static final int TEAM1 = 0, TEAM2 = 1;                            //Teams autorisées
+    private static final String MOVESFILE = "res/dat/piece/moves.txt";          //Fichier contenant les mouvements des différents types de pièces
+    private static final String UMOVESFILE = "res/dat/piece/unitMoves.txt";     //Fichier contenant les mouvements unitaires
+    private static final String PIECESFILE = "res/dat/piece/pieces.txt";        //Fichier contenant les données des différentes pièces
+    private static final String NAMESFILE = "res/dat/piece/names.txt";          //Fichier contenant les noms des différentes pièces
+    
     /*Variables static*/
     private static int[][] TABMOVES;                                            //Données contenues dans MOVESFILE
     private static int[][] TABUMOVES;                                           //Données contenues dans UMOVESFILE
@@ -14,39 +25,34 @@ public class SEPiece implements Piece
     
     /*Constantes non-static*/
     private final String NAME;                                                  //Nom de la pièce
-    protected int[] moves;                                                      //Mouvements potentiellement autorisés (dépend de type)
+    private final int[] moves;                                                  //Mouvements potentiellement autorisés (dépend de type)
     
     /*Variables non-static*/
     private int type;                                                           //Type de pièce : Roi:0; Reine:1; Fou:2; Chevalier:3; Tour:4; Pion:5.
-    private boolean team;                                                       //Equipe à laquelle appartient la pièce : false équipe du haut
+    private int team;                                                           //Equipe à laquelle appartient la pièce : 0 équipe du haut
     private int image;                                                          //Index de l'image permettant de représenter la pièce sur le plateau de jeu
-    private int attack;                                                         //Attaque de la pièce (en nombre de pdv enlevé)
+    private int attaque;                                                        //Attaque de la pièce (en nombre de pdv enlevé)
     private int defense;                                                        //Defense de la pièce
     private int life;                                                           //Nombre de pdv de la pièce
     private int x;                                                              //Coordonnées x de la pièce (en cellule)
     private int y;                                                              //Coordonnées y de la pièce (en cellule)
     private boolean alive;                                                      //Booléen qui indique si la pièce est en vie
-    protected boolean[][] pMoves = new boolean[C][C];                           //Mouvements possibles de la pièce
+    private boolean[][] pMoves = new boolean[C][C];                             //Mouvements possibles de la pièce
     
     /*Constructeur*/
-    public SEPiece(String NAME, int type, boolean team, int image, int attack, int defense, int life, int x, int y)
+    public PieceImpl(String NAME, int type, int team, int image, int attaque, int defense, int life, int x, int y)
     {
         this.NAME = NAME;
         this.type = type;
         this.team = team;
         this.image = image;
-        this.attack = attack;
+        this.attaque = attaque;
         this.defense = defense;
         this.life = life;
         this.x = x;
         this.y = y;
         alive = true;
-        moves = TABMOVES[type].clone();
-    }
-    
-    public SEPiece(String NAME, int type, boolean team, int image, int x, int y)//Pièce classique
-    {
-        this(NAME, type, team, image, 1, 0, 1, x, y);
+        moves = TABMOVES[type];
     }
     
     /*Méthodes*/
@@ -60,8 +66,7 @@ public class SEPiece implements Piece
         TABNAMES = r.file(NAMESFILE);
     }
     
-    @Override
-    public void testDirection(int dir, int dist, int nUM, Piece[][] checker)
+    private void testDirection(int dir, int dist, int nUM, PieceImpl[][] checker)
     {
         if(nUM == 0)return;
         int xm = x + TABUMOVES[dir][0] * (dist-nUM+1);
@@ -75,60 +80,44 @@ public class SEPiece implements Piece
             }
             else
             {
-                pMoves[ym][xm] = checker[ym][xm].getTeam() != team;
+                pMoves[ym][xm] = checker[ym][xm].team != team;
                 testDirection(dir, dist, 0, checker);
             }
         }
     }
     
     /*Getters*/
-    @Override
     public String getName(){return NAME;}
-    @Override
     public int getType(){return type;}
-    @Override
-    public boolean getTeam(){return team;}
-    @Override
+    public int getTeam(){return team;}
     public int getImg(){return image;}
-    @Override
-    public int getAtt(){return attack;}
-    @Override
+    public int getAtt(){return attaque;}
     public int getDef(){return defense;}
-    @Override
     public int getLife(){return life;}
-    @Override
     public int getX(){return x;}
-    @Override
     public int getY(){return y;}
-    @Override
     public boolean isAlive(){return alive;}
-    @Override
-    public boolean[][] getMoves(Piece[][] checker)
+    /**Renvoie les mouvements disponibles de la pièce.*/
+    public boolean[][] getMoves(PieceImpl[][] checker)
     {
         pMoves = new boolean[C][C];
         for(int dir = 0; dir < moves.length; dir++)
-            testDirection(dir, moves[dir], moves[dir], checker);
+            //if(!((type==5 && team==1 && dir==8) || (type==5 && team==0 && dir==0)))
+            //if(!(type==5 && ((team==1 && dir==8)||(team==0 && dir==0))))
+                testDirection(dir, moves[dir], moves[dir], checker);
         return pMoves;
     }
-    
     public static int[][] getPieces(){return TABPIECES;}
     public static String[] getNames(){return TABNAMES;}
     
     /*Setters*/
-    @Override
     public void setType(int nType){type = nType;}
-    @Override
-    public void setTeam(boolean nTeam){team = nTeam;}
-    @Override
+    public void setTeam(int nTeam){team = nTeam;}
     public void setImg(int nImg){image = nImg;}
-    @Override
-    public void setAtt(int nAtt){attack = nAtt;}
-    @Override
+    public void setAtt(int nAtt){attaque = nAtt;}
     public void setDef(int nDef){defense = nDef;}
-    @Override
     public void setLife(int nLife){life = nLife;}
-    @Override
-    public void setPos(int nX, int nY){x = nX; y = nY;}
-    @Override
+    public void setX(int nX){x = nX;}
+    public void setY(int nY){y = nY;}
     public void kill(){alive = false;}
 }

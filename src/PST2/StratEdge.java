@@ -1,7 +1,8 @@
 package PST2;
 
-import PST2.Piece.Piece;
+import PST2.Piece.SEPiece;
 import PST2.IO.Read;
+import PST2.Piece.*;
 import PST2.UI.*;
 import processing.core.*; 
 import processing.event.MouseEvent;
@@ -11,14 +12,15 @@ public class StratEdge extends PApplet
     /*Constantes*/
     private final String TITLE = "Strat::Edge";                                 //Nom fen
     private final int FPS = 60;
-    private final String IMGPATH = "res/img/";                                  //Chemin d'accès aux images
-    private final String[] PN = {"Roi", "Reine", "Fou",                         //Noms des pièces (provisoire)
-                                "Chevalier", "Tour", "Pion"};
+    //private final String IMGPATH = "res/img/";                                  //Chemin d'accès aux images
+    //private final String[] PN = {"Roi", "Reine", "Fou",                         //Noms des pièces (provisoire)
+    //                            "Chevalier", "Tour", "Pion"};
     
     /*Variables*/
     private int w;                                                              //Largeur fenêtre
     private int h;                                                              //Hauteur fenêtre
     private Game game;                                                          //Objet qui gère le jeu
+    private static StratEdge se;
 
     public static void main(String[] args)
     {
@@ -28,6 +30,8 @@ public class StratEdge extends PApplet
     @Override
     public void settings()
     {
+        se = this;
+        
         w = 1920;
         h = 1080;
         //fullScreen();
@@ -37,7 +41,7 @@ public class StratEdge extends PApplet
     @Override
     public void setup()
     {
-        Piece.load(new Read(this));                                             //Charge tout ce qui concerne les pièces
+        SEPiece.load(new Read());                                               //Charge tout ce qui concerne les pièces
         
         frameRate(FPS);
         surface.setTitle(TITLE);                                                //Modifie le titre de la fen
@@ -45,8 +49,10 @@ public class StratEdge extends PApplet
         background (100);                                                       //Couleur d'arrière plan dans la fenêtre
         stroke (0);
         
-        game = new Game(new int[]{4, 3, 2, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, new int[]{4, 3, 2, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5});//A mettre dans Event
-        game.initGraphicObjects(this);
+        Team t1 = new Team(new int[]{4, 3, 2, 0, 1, 2, 3, 4, 1, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM1);
+        Team t2 = new Team(new int[]{4, 3, 2, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM2);
+        game = new Game(t1, t2);
+        game.initGraphicObjects();
     }
     
     @Override
@@ -54,14 +60,6 @@ public class StratEdge extends PApplet
     {
         for(GraphicObject go : game.getGO())
             go.draw();
-        /*stroke(255,0,0);
-        point(50,50);*/
-        /*Exemple d'événement:
-        if (mousePressed)
-            fill(0);
-        else
-            fill(255);
-        rect(mouseX, mouseY, 80, 80);*/
     }
     
     @Override
@@ -69,10 +67,11 @@ public class StratEdge extends PApplet
     {
         for(GraphicObject go : game.getGO())
             if(go.isOn(event.getX(), event.getY()))
-                go.mouseClicked(event.getX(), event.getY());
+                go.mousePressed(event.getX(), event.getY());
     }
     
     /*Getters*/
+    public static StratEdge getSE(){return se;}
     public int getW(){return w;}
     public int getH(){return h;}
     public double getFPS(){return frameRate;}

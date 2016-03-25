@@ -31,9 +31,8 @@ public class Armies extends GraphicObject
                 for(int j = 0; j < pMoves[i].length; j++)
                     if(pMoves[i][j])
                     {
-                        //System.out.println("i : "+i+" ;j : "+j);
                         se.g.noStroke();
-                        if(game.getSelection().getTeam() == 0)
+                        if(!game.getSelection().getTeam())
                             se.g.fill(0, 150, 0, 70);
                         else
                             se.g.fill(150, 0, 0, 70);
@@ -44,13 +43,13 @@ public class Armies extends GraphicObject
     }
     
     @Override
-    public void mouseClicked(int x, int y) 
+    public void mousePressed(int x, int y) 
     {
         int rx = getRX(x), ry = getRY(y);
         Piece selec = game.getSelection();
         if(selec == null)
         {
-            game.setSelection(game.getChecker()[ry*C / h][rx*C / w]);           //On modifie éventuellement la sélection   
+            game.setSelection(game.getChecker()[ry*C / h][rx*C / w]);           //On modifie éventuellement la sélection
             return;
         }
         boolean[][] pMoves = selec.getMoves(game.getChecker());
@@ -58,8 +57,7 @@ public class Armies extends GraphicObject
         {
             Piece[][] checker = game.getChecker();
             checker[selec.getY()][selec.getX()] = null;
-            selec.setX(rx*C / w);
-            selec.setY(ry*C / h);
+            selec.setPos(rx*C / w, ry*C / h);
             checker[selec.getY()][selec.getX()] = selec;
             game.setChecker(checker);
         }

@@ -53,7 +53,7 @@ public class Pawn extends SEPiece
     public void setPos(int nX, int nY)
     {
         super.setPos(nX, nY);
-        if(nX != 0 && nY != 0)
+        if(nX != 0 || nY != 0)
             firstMove = true;                                                   //Permet de savoir si le pion s'est déjà déplacé
     }
 }

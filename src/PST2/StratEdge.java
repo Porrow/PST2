@@ -49,7 +49,7 @@ public class StratEdge extends PApplet
         background (100);                                                       //Couleur d'arrière plan dans la fenêtre
         stroke (0);
         
-        Team t1 = new Team(new int[]{4, 3, 2, 0, 1, 2, 3, 4, 1, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM1);
+        Team t1 = new Team(new int[]{4, 3, 2, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM1);
         Team t2 = new Team(new int[]{4, 3, 2, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM2);
         game = new Game(t1, t2);
         game.initGraphicObjects();

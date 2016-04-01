@@ -43,26 +43,29 @@ public class Armies extends GraphicObject
     }
     
     @Override
-    public void mousePressed(int x, int y) 
+    public void mousePressed(int x, int y)                                      //Gestion des clics de souris
     {
-        int rx = getRX(x), ry = getRY(y);
-        Piece selec = game.getSelection();
-        if(selec == null)
+        int rx = getRX(x), ry = getRY(y);                                       //On récupère les coordonnées de la souris relativement au GO
+        Piece selec = game.getSelection();                                      //On récupère la pièce sélectionnée
+        Piece nSelec = game.getChecker()[ry*C / h][rx*C / w];                   //On récupère la pièce sous la souris
+        if(selec == null)                                                       //Si il n'y a pas de pièce sélectionnée
         {
-            game.setSelection(game.getChecker()[ry*C / h][rx*C / w]);           //On modifie éventuellement la sélection
-            return;
+            game.changeSelection(nSelec);                                       //On modifie la sélection
+            return;                                                             //On s'arrête ici
         }
-        boolean[][] pMoves = selec.getMoves(game.getChecker());
-        if(pMoves[ry*C / h][rx*C / w])
+        boolean[][] pMoves = selec.getMoves(game.getChecker());                 //On récupère les mouvements potentiels de la sélection
+        if(pMoves[ry*C / h][rx*C / w])                                          //Si le clic est sur une case où le mouvements est autorisé...
         {
-            Piece[][] checker = game.getChecker();
-            checker[selec.getY()][selec.getX()] = null;
-            selec.setPos(rx*C / w, ry*C / h);
-            checker[selec.getY()][selec.getX()] = selec;
-            game.setChecker(checker);
+            Piece[][] checker = game.getChecker();                              //On récupère l'ensemble des pièces sur le terrain
+            checker[selec.getY()][selec.getX()] = null;                         //On supprime la pièce sélectionnée de la case où elle se trouve
+            selec.setPos(rx*C / w, ry*C / h);                                   //On modifie ses coordonnées
+            checker[selec.getY()][selec.getX()] = selec;                        //On ajoute la pièce sélectionnée sur la case sélectionnée
+            game.setChecker(checker);                                           //On applique les modifications apportées au terrain
+            game.setTurn();                                                     //On passe au tour suivant
+            game.setSelection(null);                                            //On annule la sélection
         }
         else
-            game.setSelection(game.getChecker()[ry*C / h][rx*C / w]);
+            game.changeSelection(nSelec);                                       //On modifie la sélection
     }
 
     @Override

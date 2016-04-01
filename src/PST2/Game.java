@@ -33,6 +33,18 @@ public class Game
         tabGO[2] = new Debug(se, 3, 3, 50, 40);
     }
     
+    public void changeSelection(Piece nSelec)
+    {
+        if(nSelec == null)
+        {
+            setSelection(null);
+            return;
+        }
+        int t = nSelec.getTeam() ? 1 : 0;                                           
+        if(getTurn() % 2 == t)                                                  //Si c'est au tour de l'équipe de nSelec
+            setSelection(nSelec);                                               //On modifie la sélection
+    }
+    
     /*Getters*/
     public Piece[][] getChecker(){return checker;}
     public GraphicObject[] getGO(){return tabGO;}
@@ -41,5 +53,6 @@ public class Game
     
     /*Setters*/
     public void setChecker(Piece[][] nChecker){checker = nChecker;}
-    public void setSelection(Piece selec){selection = selec;}
+    public void setSelection(Piece nSelec){selection = nSelec;}
+    public void setTurn(){turn++;}
 }

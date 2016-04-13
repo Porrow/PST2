@@ -11,6 +11,9 @@ public class Description extends GraphicObject
     }
 
     @Override
+    public void init(){}
+    
+    @Override
     public void draw() 
     {
         

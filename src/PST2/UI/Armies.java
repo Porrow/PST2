@@ -18,6 +18,9 @@ public class Armies extends GraphicObject
     }
     
     @Override
+    public void init(){}
+    
+    @Override
     public void draw()
     {
         for(Piece[] line : game.getChecker())
@@ -59,7 +62,7 @@ public class Armies extends GraphicObject
             Piece[][] checker = game.getChecker();                              //On récupère l'ensemble des pièces sur le terrain
             checker[selec.getY()][selec.getX()] = null;                         //On supprime la pièce sélectionnée de la case où elle se trouve
             selec.setPos(rx*C / w, ry*C / h);                                   //On modifie ses coordonnées
-            checker[selec.getY()][selec.getX()] = selec;                        //On ajoute la pièce sélectionnée sur la case sélectionnée
+            checker[selec.getY()][selec.getX()] = selec;                        //On déplace la pièce sélectionnée sur la case sélectionnée
             game.setChecker(checker);                                           //On applique les modifications apportées au terrain
             game.setTurn();                                                     //On passe au tour suivant
             game.setSelection(null);                                            //On annule la sélection

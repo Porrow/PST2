@@ -33,7 +33,7 @@ public class Game
         tabGO[2] = new Debug(se, 3, 3, 50, 40);
     }
     
-    public void changeSelection(Piece nSelec)
+    public void changeSelection(Piece nSelec)                                   //Modifie la sélection si le tour est correct
     {
         if(nSelec == null)
         {

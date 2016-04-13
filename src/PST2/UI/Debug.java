@@ -12,6 +12,9 @@ public class Debug extends GraphicObject
     }
 
     @Override
+    public void init(){}
+    
+    @Override
     public void draw()
     {
         if(DEBUG) //Si le mode debug est actif

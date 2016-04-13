@@ -4,8 +4,9 @@ import PST2.*;
 import java.io.File;
 import processing.core.*;
 
-public abstract class GraphicObject extends Thread
+public abstract class GraphicObject
 {   
+    private static final String[] ACCEPTED_EXT = {".png", ".jpg", ".gif"};      //Extensions d'image autorisées
     protected final StratEdge se;
     protected final int x;
     protected final int y;
@@ -20,6 +21,7 @@ public abstract class GraphicObject extends Thread
         this.y = y;
         this.w = w;
         this.h = h;
+        init();
     }
     
     protected GraphicObject(StratEdge se, int x, int y, int w, int h, String path)
@@ -37,11 +39,12 @@ public abstract class GraphicObject extends Thread
         {
             na = files[i].getName();
             String ext = na.substring(na.lastIndexOf("."));
-            if(ext.equals(".png"))
-            {
-                ind = Integer.parseInt(na.substring(0, na.lastIndexOf(".")));
-                imgs[ind] = se.loadImage(path + na);
-            }
+            for(String a_ext : ACCEPTED_EXT)
+                if(ext.equals(a_ext))
+                {   
+                    ind = Integer.parseInt(na.substring(0, na.lastIndexOf(".")));
+                    imgs[ind] = se.loadImage(path + na);
+                }
         }
         return imgs;
     }
@@ -80,7 +83,8 @@ public abstract class GraphicObject extends Thread
     }
     
     /*Abstract methods*/
-    public abstract void draw();                                                //On dessine le composant à l'aide de processing
+    public abstract void init();                                                //Gestion de l'initialisation du composant graphique
+    public abstract void draw();                                                //Gestion de l'affichage du composant à l'aide de processing (60 ips)
     public abstract void mousePressed(int x, int y);                            //Gestion des clics de souris
     public abstract void mouseMoved(int x, int y);                              //Gestion du mouvement de la souris
 }

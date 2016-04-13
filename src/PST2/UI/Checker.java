@@ -32,7 +32,7 @@ public class Checker extends GraphicObject
     @Override
     public void draw() 
     {
-        image(img, 0, 0); 
+        image(img, 0, 0);
     }
     
     @Override

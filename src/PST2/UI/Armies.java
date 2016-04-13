@@ -10,11 +10,27 @@ public class Armies extends GraphicObject
     private static final String IMGPATH = "res/img/piece/";
     
     private final Game game;
+    private boolean[][] pMoves;
     
     public Armies(StratEdge se, int x, int y) 
     {
         super(se, x, y, Checker.W, Checker.W, IMGPATH);
         game = se.getGame();
+    }
+    
+    public void changeSelection(Piece nSelec)                                   //Modifie la sélection si le tour est correct
+    {
+        if(nSelec == null)
+        {
+            game.setSelection(null);
+            return;
+        }
+        int t = nSelec.getTeam() ? 1 : 0;                                           
+        if(game.getTurn() % 2 == t)                                             //Si c'est au tour de l'équipe de nSelec
+        {
+            game.setSelection(nSelec);                                          //On modifie la sélection
+            pMoves = nSelec.getMoves(game.getChecker());                        //On met à jour les mouvements
+        }
     }
     
     @Override
@@ -29,7 +45,6 @@ public class Armies extends GraphicObject
                     image(tabImg[pi.getImg()], pi.getX()* w/C, pi.getY() * h/C);
         if(game.getSelection() != null)
         {
-            boolean[][] pMoves = game.getSelection().getMoves(game.getChecker());
             for(int i = 0; i < pMoves.length; i++)
                 for(int j = 0; j < pMoves[i].length; j++)
                     if(pMoves[i][j])
@@ -53,7 +68,7 @@ public class Armies extends GraphicObject
         Piece nSelec = game.getChecker()[ry*C / h][rx*C / w];                   //On récupère la pièce sous la souris
         if(selec == null)                                                       //Si il n'y a pas de pièce sélectionnée
         {
-            game.changeSelection(nSelec);                                       //On modifie la sélection
+            changeSelection(nSelec);                                            //On modifie la sélection
             return;                                                             //On s'arrête ici
         }
         boolean[][] pMoves = selec.getMoves(game.getChecker());                 //On récupère les mouvements potentiels de la sélection
@@ -68,7 +83,7 @@ public class Armies extends GraphicObject
             game.setSelection(null);                                            //On annule la sélection
         }
         else
-            game.changeSelection(nSelec);                                       //On modifie la sélection
+            changeSelection(nSelec);                                            //On modifie la sélection
     }
 
     @Override

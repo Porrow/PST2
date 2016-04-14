@@ -11,13 +11,21 @@ public class StratEdge extends PApplet
 {
     /*Constantes*/
     private final String TITLE = "Strat::Edge";                                 //Nom fen
-    private final int FPS = 60;
-    //private final String IMGPATH = "res/img/";                                  //Chemin d'accès aux images
-    //private final String[] PN = {"Roi", "Reine", "Fou",                         //Noms des pièces (provisoire)
-    //                            "Chevalier", "Tour", "Pion"};
+    private final int FPS = 60;                                                 //Images par seconde max
     
     /*Variables*/
-    public PGraphics g2;
+    public enum State 
+    {
+        MainMenu(0),
+        Play(1);
+        
+        private final int number;
+        
+        State(int etat){number=etat;}
+        
+        public int getNum(){return number;}
+    }
+    private State etat = State.Play;
     private int w;                                                              //Largeur fenêtre
     private int h;                                                              //Hauteur fenêtre
     private Game game;                                                          //Objet qui gère le jeu
@@ -81,4 +89,5 @@ public class StratEdge extends PApplet
     public int getH(){return h;}
     public double getFPS(){return frameRate;}
     public Game getGame(){return game;}
+    public State getState(){return etat;}
 }

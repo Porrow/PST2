@@ -2,6 +2,8 @@ package PST2;
 
 import PST2.Piece.*;
 import PST2.UI.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Game
 {
@@ -25,11 +27,18 @@ public class Game
     {
         StratEdge se = StratEdge.getSE();
         tabGO = new GraphicObject[4];
-        tabGO[0] = new Background(se);
+        tabGO[0] = new Background(se, se.getState().getNum());
         tabGO[1] = new Checker(se, (se.getW()-Checker.W) / 2, (se.getH()-Checker.W) / 2);
         tabGO[2] = new Armies(se, tabGO[1].getX(), tabGO[1].getY());
-        tabGO[3] = new Debug(se, 3, 3, 50, 40);
+        tabGO[3] = new Debug(se, 3, 3, 70, 40);
     }
+    
+    /*protected void display()
+    {
+        ArrayList<GraphicObject> display = StratEdge.getSE().getDisplay();
+        display.removeAll(display);
+        display.addAll(Arrays.asList(tabGO));
+    }*/
     
     /*Getters*/
     public Piece[][] getChecker(){return checker;}

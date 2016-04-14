@@ -5,10 +5,13 @@ import PST2.StratEdge;
 public class Background extends GraphicObject
 {
     private static final String IMGPATH = "res/img/background/";
+    private int img;
+
     
-    public Background(StratEdge se)
+    public Background(StratEdge se, int img)
     {
         super(se, 0, 0, se.getW(), se.getH(), IMGPATH);
+        this.img = img;
     }
 
     @Override
@@ -17,7 +20,7 @@ public class Background extends GraphicObject
     @Override
     public void draw() 
     {
-        image(tabImg[0], 0, 0);
+        image(tabImg[img], 0, 0);
     }
     
     @Override

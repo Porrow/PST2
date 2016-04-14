@@ -4,8 +4,6 @@ import static PST2.Game.C;
 
 public class Pawn extends SEPiece
 {
-    private boolean firstMove = false;
-
     public Pawn(String NAME, boolean team, int image, int attack, int defense, int life, int x, int y)
     {
         super(NAME, PAWN, team, image, attack, defense, life, x, y);
@@ -47,13 +45,5 @@ public class Pawn extends SEPiece
                     pMoves[getY()+s][getX()+1] = true;
 
         return pMoves;
-    }
-
-    @Override
-    public void setPos(int nX, int nY)
-    {
-        super.setPos(nX, nY);
-        if(nX != 0 || nY != 0)
-            firstMove = true;                                                   //Permet de savoir si le pion s'est déjà déplacé
     }
 }

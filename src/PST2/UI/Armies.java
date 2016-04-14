@@ -71,7 +71,7 @@ public class Armies extends GraphicObject
             changeSelection(nSelec);                                            //On modifie la sélection
             return;                                                             //On s'arrête ici
         }
-        boolean[][] pMoves = selec.getMoves(game.getChecker());                 //On récupère les mouvements potentiels de la sélection
+        pMoves = selec.getMoves(game.getChecker());                             //On récupère les mouvements potentiels de la sélection
         if(pMoves[ry*C / h][rx*C / w])                                          //Si le clic est sur une case où le mouvements est autorisé...
         {
             Piece[][] checker = game.getChecker();                              //On récupère l'ensemble des pièces sur le terrain

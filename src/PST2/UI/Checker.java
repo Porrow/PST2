@@ -7,32 +7,33 @@ import static PST2.Game.C;
 
 public class Checker extends GraphicObject
 {
+    private static final String IMGPATH = "res/img/checker/";
     public static final int W = 800;
     private PGraphics img;
     
     public Checker(StratEdge se, int x, int y)
     {
-        super(se, x, y, W, W);
+        super(se, x, y, W, W, IMGPATH);
     }
 
     @Override
     public void init()
     {
-        img = se.createGraphics(W, W);
+        img = se.createGraphics(W+2, W+2);
         img.beginDraw();
         for(int i = 0; i < C; i++)
             for(int j = 0; j < C; j++)
-            {
-                img.fill((i+j) % 2 * 255);
-                img.rect(i * w/C, j * h/C, w/C, h/C);
-            }
+                img.image(tabImg[(i+j)%2], i * w/C+1, j * h/C+1);
+        img.noFill();
+        img.strokeWeight(1);
+        img.rect(0, 0, W+1, W+1);
         img.endDraw();
     }
     
     @Override
     public void draw() 
     {
-        image(img, 0, 0);
+        image(img, -1, -1);
     }
     
     @Override

@@ -21,13 +21,13 @@ public abstract class GraphicObject
         this.y = y;
         this.w = w;
         this.h = h;
-        init();
     }
     
     protected GraphicObject(StratEdge se, int x, int y, int w, int h, String path)
     {
         this(se, x, y, w, h);
         tabImg = loadImages(path);
+        init();
     }
     
     private PImage[] loadImages(String path)                                    //Charge un dossier d'image dans un tableau de PImage

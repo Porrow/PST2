@@ -9,9 +9,6 @@ public class Game
     
     private GraphicObject[] tabGO;                                              //Tableau contenant tous les objets graphiques sur la view jeu
     private int turn = 0;                                                       //Tour actuel -> détermine qui doit jouer
-    
-    //private ArrayList<Piece> team1 = new ArrayList<>();                         //Piece de l'équipe 1
-    //private ArrayList<Piece> team2 = new ArrayList<>();                         //Piece de l'équipe 2
     private Piece[][] checker = new Piece[C][C];                                //Terrain : case vide : null; case non vide : Piece qui est dessus
     private Piece selection = null;                                             //Pièce sélectionnée
     
@@ -27,10 +24,11 @@ public class Game
     protected void initGraphicObjects()
     {
         StratEdge se = StratEdge.getSE();
-        tabGO = new GraphicObject[3];
-        tabGO[0] = new Checker(se, (se.getW()-Checker.W) / 2, (se.getH()-Checker.W) / 2);
-        tabGO[1] = new Armies(se, tabGO[0].getX(), tabGO[0].getY());
-        tabGO[2] = new Debug(se, 3, 3, 50, 40);
+        tabGO = new GraphicObject[4];
+        tabGO[0] = new Background(se);
+        tabGO[1] = new Checker(se, (se.getW()-Checker.W) / 2, (se.getH()-Checker.W) / 2);
+        tabGO[2] = new Armies(se, tabGO[1].getX(), tabGO[1].getY());
+        tabGO[3] = new Debug(se, 3, 3, 50, 40);
     }
     
     /*Getters*/

@@ -23,6 +23,7 @@ public interface Piece
     public int getX();
     public int getY();
     public boolean isAlive();
+    public boolean getFM();
     public boolean[][] getMoves(Piece[][] checker);
     
     /*Setters*/

@@ -26,6 +26,7 @@ public class SEPiece implements Piece
     private int x;                                                              //Coordonnées x de la pièce (en cellule)
     private int y;                                                              //Coordonnées y de la pièce (en cellule)
     private boolean alive;                                                      //Booléen qui indique si la pièce est en vie
+    protected boolean firstMove = false;                                          //Détermine si le premier mouvement a été effectué
     protected boolean[][] pMoves = new boolean[C][C];                           //Mouvements possibles de la pièce
     
     /*Constructeur*/
@@ -103,6 +104,8 @@ public class SEPiece implements Piece
     @Override
     public boolean isAlive(){return alive;}
     @Override
+    public boolean getFM(){return firstMove;}
+    @Override
     public boolean[][] getMoves(Piece[][] checker)
     {
         pMoves = new boolean[C][C];
@@ -128,7 +131,14 @@ public class SEPiece implements Piece
     @Override
     public void setLife(int nLife){life = nLife;}
     @Override
-    public void setPos(int nX, int nY){x = nX; y = nY;}
+    public void setPos(int nX, int nY)
+    {
+        x = nX; 
+        y = nY;
+        if(nX != 0 || nY != 0)
+            firstMove = true;                                                   //Permet de savoir si le pion s'est déjà déplacé
+    }
+    
     @Override
     public void kill(){alive = false;}
 }

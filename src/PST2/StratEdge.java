@@ -17,6 +17,7 @@ public class StratEdge extends PApplet
     //                            "Chevalier", "Tour", "Pion"};
     
     /*Variables*/
+    public PGraphics g2;
     private int w;                                                              //Largeur fenêtre
     private int h;                                                              //Hauteur fenêtre
     private Game game;                                                          //Objet qui gère le jeu
@@ -46,11 +47,11 @@ public class StratEdge extends PApplet
         frameRate(FPS);
         surface.setTitle(TITLE);                                                //Modifie le titre de la fen
         
-        background (100);                                                       //Couleur d'arrière plan dans la fenêtre
+        background(100);                                                        //Couleur d'arrière plan dans la fenêtre
         stroke (0);
         
-        Team t1 = new Team(new int[]{4, 3, 2, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM1);
-        Team t2 = new Team(new int[]{4, 3, 2, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM2);
+        Team t1 = new Team(new int[]{4, 3, 2, 1, 0, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM1);
+        Team t2 = new Team(new int[]{10, 9, 8, 7, 6, 8, 9, 10, 11, 11, 11, 11, 11, 11, 11, 11}, Piece.TEAM2);
         game = new Game(t1, t2);
         game.initGraphicObjects();
     }
@@ -58,8 +59,12 @@ public class StratEdge extends PApplet
     @Override
     public void draw() 
     {
+        //g2 = createGraphics(1920, 1080);
+        //g2.beginDraw();
         for(GraphicObject go : game.getGO())
             go.draw();
+        //g2.endDraw();
+        //image(g2, 0, 0, w, h);
     }
     
     @Override
@@ -76,5 +81,4 @@ public class StratEdge extends PApplet
     public int getH(){return h;}
     public double getFPS(){return frameRate;}
     public Game getGame(){return game;}
-
 }

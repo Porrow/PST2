@@ -5,8 +5,7 @@ import PST2.StratEdge;
 public class Background extends GraphicObject
 {
     private static final String IMGPATH = "res/img/background/";
-    private int img;
-
+    private final int img;
     
     public Background(StratEdge se, int img)
     {

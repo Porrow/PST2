@@ -14,7 +14,7 @@ public class StratEdge extends PApplet
     private final int FPS = 60;                                                 //Images par seconde max
     
     /*Variables*/
-    public enum State 
+    /*public enum State 
     {
         MainMenu(0),
         Play(1);
@@ -24,8 +24,9 @@ public class StratEdge extends PApplet
         State(int etat){number=etat;}
         
         public int getNum(){return number;}
-    }
-    private State etat = State.Play;
+    }**/
+    private View view;
+    //private State etat = State.Play;
     private int w;                                                              //Largeur fenêtre
     private int h;                                                              //Hauteur fenêtre
     private Game game;                                                          //Objet qui gère le jeu
@@ -55,13 +56,13 @@ public class StratEdge extends PApplet
         frameRate(FPS);
         surface.setTitle(TITLE);                                                //Modifie le titre de la fen
         
-        background(100);                                                        //Couleur d'arrière plan dans la fenêtre
+        background(0);                                                          //Couleur d'arrière plan dans la fenêtre
         stroke (0);
         
         Team t1 = new Team(new int[]{4, 3, 2, 1, 0, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM1);
         Team t2 = new Team(new int[]{10, 9, 8, 7, 6, 8, 9, 10, 11, 11, 11, 11, 11, 11, 11, 11}, Piece.TEAM2);
         game = new Game(t1, t2);
-        game.initGraphicObjects();
+        view = new Menu();
     }
     
     @Override
@@ -69,7 +70,7 @@ public class StratEdge extends PApplet
     {
         //g2 = createGraphics(1920, 1080);
         //g2.beginDraw();
-        for(GraphicObject go : game.getGO())
+        for(GraphicObject go : view.getGO())
             go.draw();
         //g2.endDraw();
         //image(g2, 0, 0, w, h);
@@ -78,7 +79,7 @@ public class StratEdge extends PApplet
     @Override
     public void mousePressed(MouseEvent event)
     {
-        for(GraphicObject go : game.getGO())
+        for(GraphicObject go : view.getGO())
             if(go.isOn(event.getX(), event.getY()))
                 go.mousePressed(event.getX(), event.getY());
     }
@@ -89,5 +90,8 @@ public class StratEdge extends PApplet
     public int getH(){return h;}
     public double getFPS(){return frameRate;}
     public Game getGame(){return game;}
-    public State getState(){return etat;}
+    //public State getState(){return etat;}
+    
+    /*Setters*/
+    public void setView(View v){view = v;}
 }

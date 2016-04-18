@@ -21,7 +21,7 @@ public class Read
         return data;
     }
     
-    public String[] file(String path)                                          //Chargement d'un fichier
+    public String[] file(String path)                                           //Chargement d'un fichier
     {
         return p.loadStrings(path);
     }

@@ -29,7 +29,7 @@ public class Debug extends GraphicObject
             rect(0, 0, w, h);
             se.g.fill(0);
             se.textFont(font);
-            text((int) (se.getFPS()) + " FPS", 5, 18);
+            text((int) (se.getFPS()) + " FPS", w/2, h/2);
         }
     }
 

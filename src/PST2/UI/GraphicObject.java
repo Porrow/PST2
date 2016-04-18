@@ -67,6 +67,7 @@ public abstract class GraphicObject
     
     protected void text(String txt, int rx, int ry)
     {
+        se.textAlign(PApplet.CENTER);
         se.g.text(txt, x + rx, y + ry);
     }
     

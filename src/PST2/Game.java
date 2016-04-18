@@ -2,14 +2,11 @@ package PST2;
 
 import PST2.Piece.*;
 import PST2.UI.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-public class Game
+public class Game extends View
 {
     public static final int C = 8;                                              //Nombre de cases sur une ligne / colonne
     
-    private GraphicObject[] tabGO;                                              //Tableau contenant tous les objets graphiques sur la view jeu
     private int turn = 0;                                                       //Tour actuel -> détermine qui doit jouer
     private Piece[][] checker = new Piece[C][C];                                //Terrain : case vide : null; case non vide : Piece qui est dessus
     private Piece selection = null;                                             //Pièce sélectionnée
@@ -23,26 +20,27 @@ public class Game
         }
     }
     
-    protected void initGraphicObjects()
+    @Override
+    public void initGraphicObjects()
     {
         StratEdge se = StratEdge.getSE();
         tabGO = new GraphicObject[4];
-        tabGO[0] = new Background(se, se.getState().getNum());
+        tabGO[0] = new Background(se, 1);
         tabGO[1] = new Checker(se, (se.getW()-Checker.W) / 2, (se.getH()-Checker.W) / 2);
         tabGO[2] = new Armies(se, tabGO[1].getX(), tabGO[1].getY());
         tabGO[3] = new Debug(se, 3, 3, 70, 40);
     }
     
-    /*protected void display()
+    @Override
+    public void display()
     {
-        ArrayList<GraphicObject> display = StratEdge.getSE().getDisplay();
+        /*ArrayList<GraphicObject> display = StratEdge.getSE().getDisplay();
         display.removeAll(display);
-        display.addAll(Arrays.asList(tabGO));
-    }*/
+        display.addAll(Arrays.asList(tabGO));*/
+    }
     
     /*Getters*/
     public Piece[][] getChecker(){return checker;}
-    public GraphicObject[] getGO(){return tabGO;}
     public Piece getSelection(){return selection;}
     public int getTurn(){return turn;}
     

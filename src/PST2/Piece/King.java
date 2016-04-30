@@ -16,18 +16,26 @@ public class King extends SEPiece
     {
         super.getMoves(checker);                                                //On remplie pMoves de manière classique
         
-        if(!firstMove)
+        if(!firstMove)                                                          //Si le roi n'a pas bougé
         {
-            boolean canRoque = !checker[getY()][0].getFM();
-            for(int i = 1; i < 4; i++)
+            boolean canRoque = false;                                           //Variable qui détermine si le roque est autorisé
+            
+            //Tour gauche (grand roque)
+            if(checker[getY()][0] != null)                                      //Si la case de la tour gauche est non vide                     
+                canRoque = !checker[getY()][0].getFM();                         //On vérifie que la pièce sur la case n'a pas encore bougé (<=> c'est bien la tour gauche)
+            for(int i = 1; i < 4; i++)                                          //On vérifie que les cases entre la tour et le roi sont vide
                 canRoque &= checker[getY()][i] == null;
-            if(canRoque)
-                pMoves[getY()][2] = true;
-            canRoque = !checker[getY()][C-1].getFM();
-            for(int i = 5; i < 7; i++)
+            if(canRoque)                                                        //Si le roque est possible
+                pMoves[getY()][2] = true;                                       //Modification dans pMoves de la case sur laquelle on peut désormais déplacer le roi
+            
+            //Tour droite (petit roque)
+            canRoque = false;
+            if(checker[getY()][C-1] != null)                                    //Si la case de la tour droite est non vide
+                canRoque = !checker[getY()][C-1].getFM();                       //On vérifie que la pièce sur la case n'a pas encore bougé (<=> c'est bien la tour droite)
+            for(int i = 5; i < 7; i++)                                          //On vérifie que les cases entre la tour et le roi sont vide
                 canRoque &= checker[getY()][i] == null;
-            if(canRoque)
-                pMoves[getY()][6] = true;
+            if(canRoque)                                                        //Si le roque est possible
+                pMoves[getY()][6] = true;                                       //Modification dans pMoves de la case sur laquelle on peut désormais déplacer le roi
         }
         
         return pMoves;
@@ -36,23 +44,23 @@ public class King extends SEPiece
     @Override
     public void setPos(int nX, int nY)
     {
-        if(Math.abs(nX-getX()) == 2)
+        if(Math.abs(nX-getX()) == 2)                                            //Si le roi est déplacé de 2 cases de sa position (<=> roque)
         {
-            int x, nx;
+            int xR, nxR;                                                        //Respectivement la position x de départ de la tour qui roque et celle d'arrivée
             Piece[][] checker = StratEdge.getSE().getGame().getChecker();
-            if(nX-getX() < 0)
+            if(nX-getX() < 0)                                                   //Si grand roque
             {
-                x = 0;
-                nx = 3;
+                xR = 0;
+                nxR = 3;
             }
-            else
+            else                                                                //Sinon (<=> petit roque)
             {
-                x = C-1;
-                nx = 5;
+                xR = C-1;
+                nxR = 5;
             }
-            checker[getY()][x].setPos(nx, getY());                              //On modifie ses coordonnées
-            checker[getY()][nx] = checker[getY()][x];                           //On déplace la pièce sélectionnée sur la case sélectionnée
-            checker[getY()][x] = null;                                          //On supprime la pièce sélectionnée de la case où elle se trouve
+            checker[getY()][xR].setPos(nxR, getY());                            //On modifie ses coordonnées
+            checker[getY()][nxR] = checker[getY()][xR];                         //On déplace la pièce sélectionnée sur la case sélectionnée
+            checker[getY()][xR] = null;                                         //On supprime la pièce sélectionnée de la case où elle se trouve
         }
         super.setPos(nX, nY);
     }

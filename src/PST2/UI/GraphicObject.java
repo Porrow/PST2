@@ -12,6 +12,7 @@ public abstract class GraphicObject
     protected final int y;
     protected final int w;
     protected final int h;
+    protected int r;
     protected PImage[] tabImg;
     
     protected GraphicObject(StratEdge se, int x, int y, int w, int h)
@@ -26,27 +27,31 @@ public abstract class GraphicObject
     protected GraphicObject(StratEdge se, int x, int y, int w, int h, String path)
     {
         this(se, x, y, w, h);
-        tabImg = loadImages(path);
-        init();
+        loadImages(path);
     }
     
-    private PImage[] loadImages(String path)                                    //Charge un dossier d'image dans un tableau de PImage
+    protected GraphicObject(StratEdge se, int x, int y, int r, String path)     //Objet graphique de forme circulaire
+    {
+        this(se, x, y, -1, -1, path);
+        this.r = r;
+    }
+    
+    private void loadImages(String path)                                    //Charge un dossier d'images dans un tableau de PImage
     {
         String na;
-        File[] files = new File(path).listFiles();
-        PImage[] imgs = new PImage[files.length];
-        for(int i = 0, ind; i < files.length; i++)
+        File[] files = new File(path).listFiles();                              //files contient tous les fichiers de path
+        tabImg = new PImage[files.length];
+        for(int i = 0, ind; i < files.length; i++)                              //Pour chacun des fichiers de path
         {
-            na = files[i].getName();
-            String ext = na.substring(na.lastIndexOf("."));
-            for(String a_ext : ACCEPTED_EXT)
-                if(ext.equals(a_ext))
+            na = files[i].getName();                                            //na contient le nom du fichier i
+            String ext = na.substring(na.lastIndexOf("."));                     //Récupération de l'extension de fichier
+            for(String a_ext : ACCEPTED_EXT)                                    
+                if(ext.equals(a_ext))                                           //Si l'extension est accepté
                 {   
-                    ind = Integer.parseInt(na.substring(0, na.lastIndexOf(".")));
-                    imgs[ind] = se.loadImage(path + na);
+                    ind = Integer.parseInt(na.substring(0,na.lastIndexOf(".")));//Récupération de l'index (nom du fichier sans l'extension)
+                    tabImg[ind] = se.loadImage(path + na);                      //Chargement de l'image
                 }
         }
-        return imgs;
     }
 
     protected void image(PImage i, int rx, int ry)
@@ -71,6 +76,11 @@ public abstract class GraphicObject
         se.g.text(txt, x + rx, y + ry);
     }
     
+    public boolean isOn(int mx, int my)                                         //Renvoie true si le point (mx, my) appartient au GO
+    {
+        return (mx >= x) && (mx < x+w) && (my >= y) && (my < y+h);
+    }
+    
     /*Getters*/
     public int getX(){return x;}
     public int getY(){return y;}
@@ -78,10 +88,6 @@ public abstract class GraphicObject
     public int getH(){return h;}
     public int getRX(int px){return px - x;}                                    //Position relative en x
     public int getRY(int py){return py - y;}                                    //Position relative en y
-    public boolean isOn(int mx, int my)                                         //Renvoie true si le point (mx, my) appartient au GO
-    {
-        return (mx >= x) && (mx < x+w) && (my >= y) && (my < y+h);
-    }
     
     /*Abstract methods*/
     public abstract void init();                                                //Gestion de l'initialisation du composant graphique

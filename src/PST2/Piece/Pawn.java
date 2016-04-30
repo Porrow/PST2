@@ -13,7 +13,7 @@ public class Pawn extends SEPiece
             moves[0] = 0;
     }
     
-    private boolean isOnChecker(int x, int y)
+    private boolean isOnChecker(int x, int y)                                   //Vérifie que la position x, y est bien sur le terrain
     {
         return x >= 0 && x < C && y >= 0 && y < C;
     }

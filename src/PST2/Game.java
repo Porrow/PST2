@@ -31,21 +31,42 @@ public class Game extends View
         tabGO[3] = new Debug(se, 3, 3, 70, 40);
     }
     
-    @Override
-    public void display()
-    {
-        /*ArrayList<GraphicObject> display = StratEdge.getSE().getDisplay();
-        display.removeAll(display);
-        display.addAll(Arrays.asList(tabGO));*/
-    }
-    
     /*Getters*/
     public Piece[][] getChecker(){return checker;}
     public Piece getSelection(){return selection;}
     public int getTurn(){return turn;}
+    public boolean[][] getMoves(boolean team)                                   //Renvoie tous les mouvements pouvant être effectués par une équipe
+    {
+        boolean[][] moves = new boolean[C][C];                                  //Matrice : true mouvement autorisé; false sinon
+        boolean[][] pmoves;
+        for(Piece[] ligne : checker)                                            //On parcourt chacune des pièces du plateau
+            for(Piece p : ligne)
+                if(p != null && p.getTeam() == team)                            //On vérifie que la pièce est non nulle et dans la bonne équipe
+                {
+                    pmoves = p.getMoves(checker);                               //On récupère les mouvements autorisés de la pièce
+                    for(int i = 0; i < pmoves.length; i++)                      //On parcourt chaque case du plateau
+                        for(int j = 0; j < pmoves[i].length; j++)
+                            moves[i][j] |= pmoves[i][j];                        //On ajoute les nouveaux mouvements autorisés
+                }
+        return moves;            
+    }
+    public boolean isCheck(boolean team)                                        //Renvoie true si le roi de l'équipe team est en echec, false sinon
+    {
+        boolean[][] moves = getMoves(!team);                                    //Récupère les possibilités de mouvements adverses
+        for(int i = 0; i < moves.length; i++)                                   //Pour chacune des cases du terrain
+            for(int j = 0; j < moves[i].length; j++)
+                if(moves[i][j] && checker[i][j] != null)                        //Si l'adversaire peut capturer la pièce sur la case
+                    if(checker[i][j].getType() == Piece.KING)                   //Si la pièce sur la case est le roi
+                        return true;                                            //Alors le roi est en échec
+        return false;
+    }
     
     /*Setters*/
-    public void setChecker(Piece[][] nChecker){checker = nChecker;}
     public void setSelection(Piece nSelec){selection = nSelec;}
-    public void setTurn(){turn++;}
+    public void setTurn()
+    {
+        turn++;
+        if(isCheck(turn%2 == 1))                                                //Vérification qu'il n'y a pas de position d'échec
+            System.out.println("Echec !");
+    }
 }

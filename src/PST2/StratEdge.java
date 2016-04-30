@@ -30,7 +30,7 @@ public class StratEdge extends PApplet
     private int w;                                                              //Largeur fenêtre
     private int h;                                                              //Hauteur fenêtre
     private Game game;                                                          //Objet qui gère le jeu
-    private static StratEdge se;
+    private static StratEdge se;                                                //Instance courante de StratEdge
 
     public static void main(String[] args)
     {
@@ -40,8 +40,7 @@ public class StratEdge extends PApplet
     @Override
     public void settings()
     {
-        se = this;
-        
+        se = this;                                                              //On récupère l'instance de StratEdge qui vient d'être créée
         w = 1920;
         h = 1080;
         //fullScreen();
@@ -83,6 +82,17 @@ public class StratEdge extends PApplet
             if(go.isOn(event.getX(), event.getY()))
                 go.mousePressed(event.getX(), event.getY());
     }
+
+    @Override
+    public void mouseMoved(MouseEvent event)
+    {
+        se.getSurface().setCursor(0);
+        for(GraphicObject go : view.getGO())
+        {
+            if(go.isOn(event.getX(), event.getY()))
+                go.mouseMoved(event.getX(), event.getY());
+        }
+    }
     
     /*Getters*/
     public static StratEdge getSE(){return se;}
@@ -93,5 +103,5 @@ public class StratEdge extends PApplet
     //public State getState(){return etat;}
     
     /*Setters*/
-    public void setView(View v){view = v;}
+    public void setView(View v){view = v;}                                      //Permet de modifier la "vue"
 }

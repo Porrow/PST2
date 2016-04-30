@@ -1,8 +1,10 @@
 package PST2.Piece;
 
+import PST2.Game;
 import PST2.IO.Read;
 
 import static PST2.Game.C;
+import PST2.StratEdge;
 
 public class SEPiece implements Piece
 {
@@ -26,7 +28,7 @@ public class SEPiece implements Piece
     private int x;                                                              //Coordonnées x de la pièce (en cellule)
     private int y;                                                              //Coordonnées y de la pièce (en cellule)
     private boolean alive;                                                      //Booléen qui indique si la pièce est en vie
-    protected boolean firstMove = false;                                          //Détermine si le premier mouvement a été effectué
+    protected boolean firstMove = false;                                        //Détermine si le premier mouvement a été effectué
     protected boolean[][] pMoves = new boolean[C][C];                           //Mouvements possibles de la pièce
     
     /*Constructeur*/
@@ -80,6 +82,18 @@ public class SEPiece implements Piece
                 testDirection(dir, dist, 0, checker);
             }
         }
+    }
+    
+    @Override
+    public void move(int x, int y)
+    {
+        Game g = StratEdge.getSE().getGame();
+        Piece[][] checker = g.getChecker();                                     //On récupère l'ensemble des pièces sur le terrain
+        checker[getY()][getX()] = null;                                         //On supprime la pièce de la case où elle se trouve
+        setPos(x, y);                                                           //On modifie ses coordonnées
+        checker[getY()][getX()] = this;                                         //On déplace la pièce sélectionnée sur la case sélectionnée
+        g.setTurn();                                                            //On passe au tour suivant
+        g.setSelection(null);                                                   //On annule la sélection
     }
     
     /*Getters*/

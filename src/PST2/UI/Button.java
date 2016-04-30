@@ -1,21 +1,15 @@
 package PST2.UI;
 
 import PST2.StratEdge;
-import processing.core.PFont;
 
 public class Button extends GraphicObject
-{
-
-    private static final String IMGPATH = "res/font/";
-    private final String text;
-    private PFont font;
+{   
+    private final Text t;
     
-    public Button(StratEdge se, int x, int y, int w, int h, int size, String text, String font)
+    public Button(StratEdge se, Text t)
     {
-        super(se, x, y, w, h);
-        System.out.println(x);
-        this.text = text;
-        this.font = se.createFont(IMGPATH + font, size);
+        super(se, t.getX(), t.getY(), t.getW(), t.getH());
+        this.t = t;
     }
     
     @Override
@@ -24,26 +18,26 @@ public class Button extends GraphicObject
     @Override
     public void draw() 
     {
-        se.textFont(font);
         se.fill(255);
         rect(0, 0, w, h);
-        se.fill(0);
-        text(text, w/2, h/2);
     }
 
     @Override
     public void mousePressed(int x, int y)
     {
-        switch(text)
+        switch(t.getText())
         {
-            case "Jouer":
+            case "Jouer":                                                       //Actions lors d'un clic de souris sur le bouton jouer
                 se.setView(se.getGame());
                 break;
-            case "Quitter":
+            case "Quitter":                                                     //Actions lors d'un clic de souris sur le bouton quitter
                 System.exit(0);
         }
     }
 
     @Override
-    public void mouseMoved(int x, int y) {}
+    public void mouseMoved(int x, int y)
+    {
+        se.getSurface().setCursor(12);                                          //Modification de l'apparence du curseur de la souris lorsque l'on est au-dessus d'un bouton
+    }
 }

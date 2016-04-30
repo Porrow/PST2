@@ -10,7 +10,8 @@ public interface Piece
     public static final String PIECESFILE = "res/dat/piece/pieces.txt";         //Fichier contenant les données des différentes pièces
     public static final String NAMESFILE = "res/dat/piece/names.txt";           //Fichier contenant les noms des différentes pièces
     
-    public void testDirection(int dir, int dist, int nUM, Piece[][] checker);
+    public void testDirection(int dir, int dist, int nUM, Piece[][] checker);   
+    public void move(int x, int y);                                             //Déplace la pièce sur le terrain aux coordonnées (x, y)
     
     /*Getters*/
     public String getName();

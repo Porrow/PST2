@@ -6,18 +6,16 @@ public abstract class View
 {
     protected GraphicObject[] tabGO;                                            //Tableau contenant tous les objets graphiques de la view
     
-    public View()
-    {
-        
-    }
-    
     public GraphicObject[] getGO()
     {
         if(tabGO == null)
+        {
             initGraphicObjects();
+            for(GraphicObject go : tabGO)
+                go.init();
+        }
         return tabGO;
     }
     
     public abstract void initGraphicObjects();
-    public abstract void display();
 }

@@ -4,5 +4,8 @@ package PST2.Capacity;
 
 public abstract class Capacity
 {
+    private String NAME;
     
+    public abstract void init();
+    public abstract void power();
 }

@@ -29,7 +29,7 @@ public class Armies extends GraphicObject
         if(game.getTurn() % 2 == t)                                             //Si c'est au tour de l'équipe de nSelec
         {
             game.setSelection(nSelec);                                          //On modifie la sélection
-            pMoves = nSelec.getMoves(game.getChecker());                        //On met à jour les mouvements
+            pMoves = nSelec.getMoves(game.getChecker(), true);                  //On met à jour les mouvements
         }
     }
     
@@ -71,9 +71,13 @@ public class Armies extends GraphicObject
             changeSelection(nSelec);                                            //On modifie (éventuellement) la sélection
             return;                                                             //On s'arrête ici
         }
-        pMoves = selec.getMoves(game.getChecker());                             //On récupère les mouvements potentiels de la sélection
+        pMoves = selec.getMoves(game.getChecker(), true);                       //On récupère les mouvements potentiels de la sélection
         if(pMoves[ry*C / h][rx*C / w])                                          //Si le clic est sur une case où le mouvements est autorisé...
-            selec.move(rx*C / w, ry*C / h);                                     //On déplace la pièce sur la bonne case
+        {
+            selec.move(rx*C / w, ry*C / h, game.getChecker());                  //On déplace la pièce sur la bonne case
+            game.setTurn();                                                     //On passe au tour suivant
+            game.setSelection(null);                                            //On annule la sélection
+        }
         else
             changeSelection(nSelec);                                            //On modifie la sélection
     }

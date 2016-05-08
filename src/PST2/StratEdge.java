@@ -44,7 +44,7 @@ public class StratEdge extends PApplet
         w = 1920;
         h = 1080;
         //fullScreen();
-        size(w, h);                                                             //Taille de la fenêtre
+        size(w, h, P2D);                                                        //Taille de la fenêtre
     }
     
     @Override
@@ -67,12 +67,8 @@ public class StratEdge extends PApplet
     @Override
     public void draw() 
     {
-        //g2 = createGraphics(1920, 1080);
-        //g2.beginDraw();
         for(GraphicObject go : view.getGO())
             go.draw();
-        //g2.endDraw();
-        //image(g2, 0, 0, w, h);
     }
     
     @Override

@@ -12,16 +12,16 @@ public class King extends SEPiece
     }
     
     @Override
-    public boolean[][] getMoves(Piece[][] checker)                              //Gestion des mouvements particuliers du roi
+    public boolean[][] getMoves(Piece[][] checker, boolean saveTheKing)         //Gestion des mouvements particuliers du roi
     {
-        super.getMoves(checker);                                                //On remplie pMoves de manière classique
+        boolean[][] pMoves = super.getMoves(checker, saveTheKing);              //On remplie pMoves de manière classique
         
         if(!firstMove)                                                          //Si le roi n'a pas bougé
         {
             boolean canRoque = false;                                           //Variable qui détermine si le roque est autorisé
             
             //Tour gauche (grand roque)
-            if(checker[getY()][0] != null)                                      //Si la case de la tour gauche est non vide                     
+            if(checker[getY()][0] != null)                                      //Si la case de la tour gauche est non vide
                 canRoque = !checker[getY()][0].getFM();                         //On vérifie que la pièce sur la case n'a pas encore bougé (<=> c'est bien la tour gauche)
             for(int i = 1; i < 4; i++)                                          //On vérifie que les cases entre la tour et le roi sont vide
                 canRoque &= checker[getY()][i] == null;

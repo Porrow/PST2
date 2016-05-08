@@ -19,14 +19,14 @@ public class Pawn extends SEPiece
     }
     
     @Override
-    public boolean[][] getMoves(Piece[][] checker)                              //Gestion des mouvements particuliers du pion
+    public boolean[][] getMoves(Piece[][] checker, boolean saveTheKing)         //Gestion des mouvements particuliers du pion
     {
         if(moves[0] == 2 && firstMove && getTeam())                             //Empêche de bouger de 2 cases en un tour après le premier mouv, pour la team du bas
             moves[0] = 1;
         else if(moves[8] == 2 && firstMove && !getTeam())                       //Idem avec la team du haut
             moves[8] = 1;
         
-        super.getMoves(checker);                                                //On remplie pMoves de manière classique
+        boolean[][] pMoves = super.getMoves(checker, saveTheKing);              //On remplie pMoves de manière classique
         
         int s = getTeam() ? -1 : 1;                                             //Optimisation pour ne pas avoir à réécrire 2 fois le même code en fonction de l'équipe
         if(isOnChecker(getX(), getY()+s))

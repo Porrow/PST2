@@ -2,9 +2,8 @@ package PST2.Piece;
 
 import PST2.Game;
 import PST2.IO.Read;
-
-import static PST2.Game.C;
 import PST2.StratEdge;
+import static PST2.Game.C;
 
 public class SEPiece implements Piece
 {
@@ -29,7 +28,7 @@ public class SEPiece implements Piece
     private int y;                                                              //Coordonnées y de la pièce (en cellule)
     private boolean alive;                                                      //Booléen qui indique si la pièce est en vie
     protected boolean firstMove = false;                                        //Détermine si le premier mouvement a été effectué
-    protected boolean[][] pMoves = new boolean[C][C];                           //Mouvements possibles de la pièce
+    //protected boolean[][] pMoves = new boolean[C][C];                           //Mouvements possibles de la pièce
     
     /*Constructeur*/
     public SEPiece(String NAME, int type, boolean team, int image, int attack, int defense, int life, int x, int y)
@@ -53,6 +52,7 @@ public class SEPiece implements Piece
     }
     
     /*Méthodes*/
+    
     /**Charge les pièces et leurs mouvements
      * @param r L'objet Read qui nous permet de lire.*/
     public static void load(Read r)
@@ -64,7 +64,7 @@ public class SEPiece implements Piece
     }
     
     @Override
-    public void testDirection(int dir, int dist, int nUM, Piece[][] checker)
+    public void testDirection(int dir, int dist, int nUM, Piece[][] checker, boolean[][] pMoves)
     {
         if(nUM == 0)return;
         int xm = x + TABUMOVES[dir][0] * (dist-nUM+1);
@@ -74,29 +74,76 @@ public class SEPiece implements Piece
             if(checker[ym][xm] == null)
             {
                 pMoves[ym][xm] = true;
-                testDirection(dir, dist, nUM-1, checker);
+                testDirection(dir, dist, nUM-1, checker, pMoves);
             }
             else
             {
                 pMoves[ym][xm] = checker[ym][xm].getTeam() != team;
-                testDirection(dir, dist, 0, checker);
+                testDirection(dir, dist, 0, checker, pMoves);
             }
         }
     }
     
     @Override
-    public void move(int x, int y)
+    public void saveTheKing(boolean[][] pMoves)
     {
         Game g = StratEdge.getSE().getGame();
-        Piece[][] checker = g.getChecker();                                     //On récupère l'ensemble des pièces sur le terrain
+        Piece[][] fChecker;
+        //Piece fPiece = clone();
+        int saveX = x;
+        int saveY = y;
+        boolean saveFM = firstMove;
+        for(int i = 0; i < pMoves.length; i++)                                  
+            for(int j = 0; j < pMoves[i].length; j++)
+                if(pMoves[i][j])
+                {
+                    fChecker = g.cloneChecker();                                //Clonage du checker <=> fChecker est virtuel
+                    move(j, i, fChecker);
+                    if(g.isCheck(team, fChecker))
+                        pMoves[i][j] = false;
+                }
+        setPos(saveX, saveY);
+        firstMove = saveFM;
+    }
+    
+    @Override
+    public void move(int x,int y, Piece[][] checker)
+    {
+        checker[getY()][getX()] = null;                                         //On supprime la pièce de la case où elle se trouve
+        if(checker[y][x]!=null)
+        {
+            Piece piece = checker[y][x];
+            life-=piece.getAtt();
+            piece.setLife(piece.getLife()-attack);
+            if(life>0)
+            {
+                setPos(x, y);                                                   //On modifie ses coordonnées
+                checker[getY()][getX()] = this;                                 //On déplace la pièce sélectionnée sur la case sélectionnée
+            }
+            else if(piece.getLife()<=0)
+                checker[y][x]=null;
+        }
+        else{
+            setPos(x, y);                                                       //On modifie ses coordonnées
+            checker[getY()][getX()] = this;                                     //On déplace la pièce sélectionnée sur la case sélectionnée
+        }
+    }
+
+    /*@Override
+    public void move(int x, int y, Piece[][] checker)
+    {
         checker[getY()][getX()] = null;                                         //On supprime la pièce de la case où elle se trouve
         setPos(x, y);                                                           //On modifie ses coordonnées
         checker[getY()][getX()] = this;                                         //On déplace la pièce sélectionnée sur la case sélectionnée
-        g.setTurn();                                                            //On passe au tour suivant
-        g.setSelection(null);                                                   //On annule la sélection
-    }
+    }*/
     
     /*Getters*/
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
+    }
     @Override
     public String getName(){return NAME;}
     @Override
@@ -120,18 +167,22 @@ public class SEPiece implements Piece
     @Override
     public boolean getFM(){return firstMove;}
     @Override
-    public boolean[][] getMoves(Piece[][] checker)
+    public boolean[][] getMoves(Piece[][] checker, boolean saveTheKing)
     {
-        pMoves = new boolean[C][C];
+        boolean[][] pMoves = new boolean[C][C];
         for(int dir = 0; dir < moves.length; dir++)
-            testDirection(dir, moves[dir], moves[dir], checker);
+            testDirection(dir, moves[dir], moves[dir], checker, pMoves);
+        if(saveTheKing)
+            saveTheKing(pMoves);
         return pMoves;
     }
     
     public static int[][] getPieces(){return TABPIECES;}
+    
     public static String[] getNames(){return TABNAMES;}
     
     /*Setters*/
+    
     @Override
     public void setType(int nType){type = nType;}
     @Override

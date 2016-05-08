@@ -5,6 +5,7 @@ import static PST2.Game.C;
 public class Team
 {
     private Piece team[] = new Piece[2*C];
+    public boolean check = false;                                               //Détermine si le roi de l'équipe concernée est en échec
             
     public Team(int[] team, boolean side)
     {

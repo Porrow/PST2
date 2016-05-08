@@ -18,7 +18,7 @@ public class Button extends GraphicObject
     @Override
     public void draw() 
     {
-        se.fill(255);
+        se.fill(255, 50);
         rect(0, 0, w, h);
     }
 
@@ -31,7 +31,7 @@ public class Button extends GraphicObject
                 se.setView(se.getGame());
                 break;
             case "Quitter":                                                     //Actions lors d'un clic de souris sur le bouton quitter
-                System.exit(0);
+                StratEdge.getSE().exit();
         }
     }
 

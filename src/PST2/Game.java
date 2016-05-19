@@ -29,7 +29,6 @@ public class Game extends View
         StratEdge se = StratEdge.getSE();
         tabGO = new GraphicObject[5];
         tabGO[0] = new Background(se, 1);
-        //tabGO[1] = new Checker(se, (se.getW()-Checker.W) / 2, (se.getH()-Checker.W) / 2);
         tabGO[1] = new Checker(se, (se.getW() - Checker.W) / 4, (se.getH() - Checker.W) / 2);
         tabGO[2] = new Armies(se, tabGO[1].getX(), tabGO[1].getY());
         tabGO[3] = new Debug(se, 3, 3, 70, 40);
@@ -40,7 +39,9 @@ public class Game extends View
     {
         Piece[][] clone = new Piece[C][C];
         for(int i = 0; i < checker.length; i++)
-            clone[i] = checker[i].clone();
+            for(int j = 0; j < checker[i].length; j++)
+                if(checker[i][j] != null)
+                    clone[i][j] = checker[i][j].clonePiece();
         return clone;
     }
     
@@ -83,17 +84,16 @@ public class Game extends View
     
     public void setTurn()
     {
-        t1.check = false;
-        t2.check = false;
+        t1.getKing().setCheck(false);
+        t2.getKing().setCheck(false);
         turn++;
         if(isCheck(turn%2 == 1, checker))                                                //Si le roi qui doit jouer est en échec
         {
             System.out.println("Echec !");
             if(turn%2 != 1)
-                t1.check = true;
+                t1.getKing().setCheck(true);
             else
-                t2.check = true;
+                t2.getKing().setCheck(true);
         }
-        
     }
 }

@@ -43,20 +43,33 @@ public class Armies extends GraphicObject
             for(Piece pi : line)
                 if(pi != null)
                     image(tabImg[pi.getImg()], pi.getX()* w/C, pi.getY() * h/C);
+        
+        //boolean[][] mouvs = game.getMoves(game.getTurn()%2 == 1, game.getChecker());
         if(game.getSelection() != null)
-        {
+        //{
             for(int i = 0; i < pMoves.length; i++)
                 for(int j = 0; j < pMoves[i].length; j++)
+                //{
                     if(pMoves[i][j])
                     {
                         se.g.noStroke();
                         if(!game.getSelection().getTeam())
-                            se.g.fill(0, 150, 0, 70);
+                            se.g.fill(0, 150, 0, 200);
                         else
-                            se.g.fill(150, 0, 0, 70);
+                            se.g.fill(150, 0, 0, 200);
                         ellipse(j * w/C + w/C/2, i * w/C + w/C/2, 50, 50);
                     }
-        }
+                    /*if(mouvs[i][j])
+                    {
+                        se.g.noStroke();
+                        if(!game.getSelection().getTeam())
+                            se.g.fill(0, 150, 0, 50);
+                        else
+                            se.g.fill(150, 0, 0, 50);
+                        ellipse(j * w/C + w/C/2, i * w/C + w/C/2, 50, 50);
+                    }
+                }
+        }*/
         
     }
     

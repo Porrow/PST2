@@ -26,7 +26,7 @@ public class SEPiece implements Piece
     private int life;                                                           //Nombre de pdv de la pièce
     private int x;                                                              //Coordonnées x de la pièce (en cellule)
     private int y;                                                              //Coordonnées y de la pièce (en cellule)
-    private boolean alive;                                                      //Booléen qui indique si la pièce est en vie
+    private boolean alive = true;                                               //Booléen qui indique si la pièce est en vie
     protected boolean firstMove = false;                                        //Détermine si le premier mouvement a été effectué
     //protected boolean[][] pMoves = new boolean[C][C];                           //Mouvements possibles de la pièce
     
@@ -42,7 +42,6 @@ public class SEPiece implements Piece
         this.life = life;
         this.x = x;
         this.y = y;
-        alive = true;
         moves = TABMOVES[type].clone();
     }
     
@@ -89,60 +88,63 @@ public class SEPiece implements Piece
     {
         Game g = StratEdge.getSE().getGame();
         Piece[][] fChecker;
-        //Piece fPiece = clone();
-        int saveX = x;
-        int saveY = y;
-        boolean saveFM = firstMove;
         for(int i = 0; i < pMoves.length; i++)                                  
             for(int j = 0; j < pMoves[i].length; j++)
                 if(pMoves[i][j])
                 {
-                    fChecker = g.cloneChecker();                                //Clonage du checker <=> fChecker est virtuel
-                    move(j, i, fChecker);
-                    if(g.isCheck(team, fChecker))
-                        pMoves[i][j] = false;
+                    fChecker = g.cloneChecker();                                //Clonage du checker <=> fChecker est virtuel : on peut faire ce que l'on veut dessus
+                    fChecker[y][x].move(j, i, fChecker);                        //On effectue un mouvement virtuel de la pièce sur la case (j, i)
+                    if(g.isCheck(team, fChecker))                               //Si le Roi est virtuellement en échec
+                        pMoves[i][j] = false;                                   //On empêche (réellement) la possibilité d'effectuer ce mouvement
                 }
-        setPos(saveX, saveY);
-        firstMove = saveFM;
     }
     
     @Override
-    public void move(int x,int y, Piece[][] checker)
+    public void move(int x, int y, Piece[][] checker)
     {
         checker[getY()][getX()] = null;                                         //On supprime la pièce de la case où elle se trouve
         if(checker[y][x]!=null)
         {
-            Piece piece = checker[y][x];
-            life-=piece.getAtt();
-            piece.setLife(piece.getLife()-attack);
-            if(life>0)
+            Piece enemy = checker[y][x];
+            life -= enemy.getDef();
+            enemy.setLife(enemy.getLife() - attack);
+            if(life > 0)
             {
                 setPos(x, y);                                                   //On modifie ses coordonnées
                 checker[getY()][getX()] = this;                                 //On déplace la pièce sélectionnée sur la case sélectionnée
             }
-            else if(piece.getLife()<=0)
-                checker[y][x]=null;
+            else if(enemy.getLife() <= 0)
+                checker[y][x] = null;
         }
-        else{
+        else
+        {
             setPos(x, y);                                                       //On modifie ses coordonnées
             checker[getY()][getX()] = this;                                     //On déplace la pièce sélectionnée sur la case sélectionnée
         }
     }
-
-    /*@Override
-    public void move(int x, int y, Piece[][] checker)
-    {
-        checker[getY()][getX()] = null;                                         //On supprime la pièce de la case où elle se trouve
-        setPos(x, y);                                                           //On modifie ses coordonnées
-        checker[getY()][getX()] = this;                                         //On déplace la pièce sélectionnée sur la case sélectionnée
-    }*/
     
     /*Getters*/
     
     @Override
-    public Object clone() throws CloneNotSupportedException
+    public Piece clonePiece()
     {
-        return super.clone();
+        SEPiece p;
+        switch(type)
+        {
+            case Piece.KING:
+                p = new King(NAME, team, image, attack, defense, life, x, y);
+                break;
+            case Piece.PAWN:
+                p = new Pawn(NAME, team, image, attack, defense, life, x, y);
+                break;
+            default:
+                p = new SEPiece(NAME, type, team, image, attack, defense, life, x, y);
+                break;
+        }
+        p.firstMove = firstMove;
+        p.alive = alive;
+        p.moves = moves.clone();
+        return p;
     }
     @Override
     public String getName(){return NAME;}

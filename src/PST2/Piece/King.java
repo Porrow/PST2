@@ -5,7 +5,8 @@ import PST2.StratEdge;
 
 public class King extends SEPiece
 {
-    
+    private boolean check = false;                                              //Détermine si le roi est en échec
+            
     public King(String NAME, boolean team, int image, int attack, int defense, int life, int x, int y)
     {
         super(NAME, KING, team, image, attack, defense, life, x, y);
@@ -16,7 +17,7 @@ public class King extends SEPiece
     {
         boolean[][] pMoves = super.getMoves(checker, saveTheKing);              //On remplie pMoves de manière classique
         
-        if(!firstMove)                                                          //Si le roi n'a pas bougé
+        if(!firstMove && !check)                                                //Si le roi n'a pas bougé et n'est pas en échec
         {
             boolean canRoque = false;                                           //Variable qui détermine si le roque est autorisé
             
@@ -64,4 +65,6 @@ public class King extends SEPiece
         }
         super.setPos(nX, nY);
     }
+    
+    public void setCheck(boolean nCheck){check = nCheck;}
 }

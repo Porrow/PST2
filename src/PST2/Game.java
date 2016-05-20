@@ -27,12 +27,15 @@ public class Game extends View
     public void initGraphicObjects()
     {
         StratEdge se = StratEdge.getSE();
-        tabGO = new GraphicObject[5];
+        tabGO = new GraphicObject[8];
         tabGO[0] = new Background(se, 1);
-        tabGO[1] = new Checker(se, (se.getW() - Checker.W) / 4, (se.getH() - Checker.W) / 2);
-        tabGO[2] = new Armies(se, tabGO[1].getX(), tabGO[1].getY());
-        tabGO[3] = new Debug(se, 3, 3, 70, 40);
-        tabGO[4] = new Description(se,(se.getW() - Checker.W),(se.getH()-Checker.W)/2,2*Checker.W/3,Checker.W,"OldLondon.ttf",30);
+        tabGO[1] = new DeadPieces(se,(se.getW() - Checker.W) / 4, 0, Checker.W, (se.getH() - Checker.W) / 4, t1);
+        tabGO[2] = new DeadPieces(se,(se.getW() - Checker.W) / 4, (Checker.W+(se.getH()-Checker.W)/4 * 3),Checker.W, (se.getH() - Checker.W) / 4, t2);
+        tabGO[3] = new Checker(se, (se.getW() - Checker.W) / 4, (se.getH() - Checker.W) / 2);
+        tabGO[4] = new Armies(se, tabGO[3].getX(), tabGO[3].getY());
+        tabGO[5] = new Debug(se, 1840, 3, 70, 40);
+        tabGO[6] = new Description(se,(se.getW() - Checker.W), (se.getH()-Checker.W)/2, 2*Checker.W/3, Checker.W, "OldLondon.ttf", 30);
+        tabGO[7] = new Button(se, 10, 10, 0, 1, 2);
     }
     
     public Piece[][] cloneChecker()                                             //Crée une copie du checker
@@ -79,6 +82,22 @@ public class Game extends View
         return false;
     }
     
+    public boolean isCheckAndMat(boolean team)
+    {
+        boolean[][] pmoves;
+        for(Piece[] ligne : checker)                                            //On parcourt chacune des pièces du plateau
+            for(Piece p : ligne)
+                if(p != null && p.getTeam() == team)                            //On vérifie que la pièce est non nulle et dans la bonne équipe
+                {
+                    pmoves = p.getMoves(checker, true);                         //On récupère les mouvements autorisés de la pièce
+                    for(boolean[] bl : pmoves)                                  //On parcourt chaque case du plateau
+                        for(boolean b : bl)
+                            if(b)
+                                return false;
+                }
+        return true;
+    }
+    
     /*Setters*/
     public void setSelection(Piece nSelec){selection = nSelec;}
     
@@ -87,8 +106,10 @@ public class Game extends View
         t1.getKing().setCheck(false);
         t2.getKing().setCheck(false);
         turn++;
-        if(isCheck(turn%2 == 1, checker))                                                //Si le roi qui doit jouer est en échec
+        if(isCheck(turn%2 == 1, checker))                                       //Si le roi qui doit jouer est en échec
         {
+            if(isCheckAndMat(turn%2 == 1))
+                System.out.println("Game Over");
             System.out.println("Echec !");
             if(turn%2 != 1)
                 t1.getKing().setCheck(true);

@@ -10,8 +10,8 @@ public abstract class GraphicObject
     protected final StratEdge se;
     protected final int x;
     protected final int y;
-    protected final int w;
-    protected final int h;
+    protected int w;
+    protected int h;
     protected int r;
     protected PImage[] tabImg;
     
@@ -36,7 +36,7 @@ public abstract class GraphicObject
         this.r = r;
     }
     
-    private void loadImages(String path)                                    //Charge un dossier d'images dans un tableau de PImage
+    private void loadImages(String path)                                        //Charge un dossier d'images dans un tableau de PImage
     {
         String na;
         File[] files = new File(path).listFiles();                              //files contient tous les fichiers de path
@@ -62,6 +62,11 @@ public abstract class GraphicObject
     protected void rect(int rx, int ry, int w, int h)
     {
         se.g.rect(x + rx, y + ry, w, h);
+    }
+    
+    protected void rect(int rx, int ry, int w, int h, int r)
+    {
+        se.g.rect(x + rx, y + ry, w, h, r);
     }
     
     protected void ellipse(int rx, int ry, int w, int h)

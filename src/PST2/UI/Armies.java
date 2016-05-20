@@ -26,7 +26,7 @@ public class Armies extends GraphicObject
             return;
         }
         int t = nSelec.getTeam() ? 1 : 0;                                           
-        if(game.getTurn() % 2 == t)                                             //Si c'est au tour de l'équipe de nSelec
+        if(game.getTurn() % 2 != t)                                             //Si c'est au tour de l'équipe de nSelec
         {
             game.setSelection(nSelec);                                          //On modifie la sélection
             pMoves = nSelec.getMoves(game.getChecker(), true);                  //On met à jour les mouvements

@@ -14,19 +14,9 @@ public class StratEdge extends PApplet
     private final int FPS = 60;                                                 //Images par seconde max
     
     /*Variables*/
-    /*public enum State 
-    {
-        MainMenu(0),
-        Play(1);
-        
-        private final int number;
-        
-        State(int etat){number=etat;}
-        
-        public int getNum(){return number;}
-    }**/
-    private View view;
-    //private State etat = State.Play;
+    private int view = 0;
+    private View[] tabView;
+    private Team t1, t2;
     private int w;                                                              //Largeur fenêtre
     private int h;                                                              //Hauteur fenêtre
     private Game game;                                                          //Objet qui gère le jeu
@@ -35,6 +25,13 @@ public class StratEdge extends PApplet
     public static void main(String[] args)
     {
         PApplet.main(new String[]{PST2.StratEdge.class.getName()});
+    }
+    
+    public void initViews()
+    {
+        tabView = new View[2];
+        tabView[0] = new Menu();
+        tabView[1] = new Game(t1, t2);
     }
     
     @Override
@@ -58,23 +55,22 @@ public class StratEdge extends PApplet
         background(0);                                                          //Couleur d'arrière plan dans la fenêtre
         stroke (0);
         
-        Team t1 = new Team(new int[]{4, 3, 2, 1, 0, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM1);
-        Team t2 = new Team(new int[]{10, 9, 8, 7, 6, 8, 9, 10, 11, 11, 11, 11, 11, 11, 11, 11}, Piece.TEAM2);
-        game = new Game(t1, t2);
-        view = new Menu();
+        t1 = new Team(new int[]{10, 9, 8, 7, 6, 8, 9, 10, 11, 11, 11, 11, 11, 11, 11, 11}, Piece.TEAM1);
+        t2 = new Team(new int[]{4, 3, 2, 1, 0, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM2);
+        initViews();
     }
     
     @Override
     public void draw() 
     {
-        for(GraphicObject go : view.getGO())
+        for(GraphicObject go : tabView[view].getGO())
             go.draw();
     }
     
     @Override
     public void mousePressed(MouseEvent event)
     {
-        for(GraphicObject go : view.getGO())
+        for(GraphicObject go : tabView[view].getGO())
             if(go.isOn(event.getX(), event.getY()))
                 go.mousePressed(event.getX(), event.getY());
     }
@@ -83,11 +79,8 @@ public class StratEdge extends PApplet
     public void mouseMoved(MouseEvent event)
     {
         se.getSurface().setCursor(0);
-        for(GraphicObject go : view.getGO())
-        {
-            if(go.isOn(event.getX(), event.getY()))
-                go.mouseMoved(event.getX(), event.getY());
-        }
+        for(GraphicObject go : tabView[view].getGO())
+            go.mouseMoved(event.getX(), event.getY());
     }
     
     /*Getters*/
@@ -95,9 +88,9 @@ public class StratEdge extends PApplet
     public int getW(){return w;}
     public int getH(){return h;}
     public double getFPS(){return frameRate;}
-    public Game getGame(){return game;}
-    //public State getState(){return etat;}
+    public Game getGame(){return (Game)tabView[1];}
+    public View[] getViews(){return tabView;}
     
     /*Setters*/
-    public void setView(View v){view = v;}                                      //Permet de modifier la "vue"
+    public void setView(int v){view = v;}                                       //Permet de modifier la "vue"
 }

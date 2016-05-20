@@ -110,11 +110,18 @@ public class SEPiece implements Piece
             enemy.setLife(enemy.getLife() - attack);
             if(life > 0)
             {
+                enemy.kill();
                 setPos(x, y);                                                   //On modifie ses coordonnées
                 checker[getY()][getX()] = this;                                 //On déplace la pièce sélectionnée sur la case sélectionnée
             }
             else if(enemy.getLife() <= 0)
+            {
+                enemy.kill();
+                kill();
                 checker[y][x] = null;
+            }
+            else
+                kill();
         }
         else
         {

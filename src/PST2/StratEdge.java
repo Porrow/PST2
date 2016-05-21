@@ -39,8 +39,8 @@ public class StratEdge extends PApplet
         se = this;                                                              //On récupère l'instance de StratEdge qui vient d'être créée
         w = 1280;
         h = 720;
-        fullScreen(P2D);
-        //size(w, h, P2D);                                                        //Taille de la fenêtre
+        //fullScreen(P2D);
+        size(w, h, P2D);                                                        //Taille de la fenêtre
     }
     
     @Override

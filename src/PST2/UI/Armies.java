@@ -57,7 +57,7 @@ public class Armies extends GraphicObject
                             se.g.fill(0, 150, 0, 200);
                         else
                             se.g.fill(150, 0, 0, 200);
-                        ellipse(j * w/C + w/C/2, i * w/C + w/C/2, 50, 50);
+                        ellipse(j * w/C + w/C/2, i * w/C + w/C/2, 30, 30);
                     }
                     /*if(mouvs[i][j])
                     {

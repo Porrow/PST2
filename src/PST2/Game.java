@@ -33,8 +33,8 @@ public class Game extends View
         tabGO[2] = new DeadPieces(se,(se.getW() - Checker.W) / 4, (Checker.W+(se.getH()-Checker.W)/4 * 3),Checker.W, (se.getH() - Checker.W) / 4, t2);
         tabGO[3] = new Checker(se, (se.getW() - Checker.W) / 4, (se.getH() - Checker.W) / 2);
         tabGO[4] = new Armies(se, tabGO[3].getX(), tabGO[3].getY());
-        tabGO[5] = new Debug(se, 1840, 3, 70, 40);
-        tabGO[6] = new Description(se,(se.getW() - Checker.W), (se.getH()-Checker.W)/2, 2*Checker.W/3, Checker.W, "OldLondon.ttf", 30);
+        tabGO[5] = new Debug(se, se.getW() - 80, 3, 70, 40);
+        tabGO[6] = new Description(se,(se.getW() - Checker.W) + 100, (se.getH()-Checker.W)/2, 2*Checker.W/3, Checker.W, "OldLondon.ttf", 30);
         tabGO[7] = new Button(se, 10, 10, 0, 1, 2);
     }
     

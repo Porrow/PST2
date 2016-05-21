@@ -18,8 +18,8 @@ public abstract class GraphicObject
     protected GraphicObject(StratEdge se, int x, int y, int w, int h)
     {
         this.se = se;
-        this.x = x;
-        this.y = y;
+        this.x = (se.width-se.getW()) / 2 + x;
+        this.y = (se.height-se.getH()) / 2 + y;
         this.w = w;
         this.h = h;
     }

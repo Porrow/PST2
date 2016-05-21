@@ -19,7 +19,6 @@ public class StratEdge extends PApplet
     private Team t1, t2;
     private int w;                                                              //Largeur fenêtre
     private int h;                                                              //Hauteur fenêtre
-    private Game game;                                                          //Objet qui gère le jeu
     private static StratEdge se;                                                //Instance courante de StratEdge
 
     public static void main(String[] args)
@@ -38,10 +37,10 @@ public class StratEdge extends PApplet
     public void settings()
     {
         se = this;                                                              //On récupère l'instance de StratEdge qui vient d'être créée
-        w = 1920;
-        h = 1080;
-        //fullScreen();
-        size(w, h, P2D);                                                        //Taille de la fenêtre
+        w = 1280;
+        h = 720;
+        fullScreen(P2D);
+        //size(w, h, P2D);                                                        //Taille de la fenêtre
     }
     
     @Override

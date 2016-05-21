@@ -8,7 +8,7 @@ public class DeadPieces extends GraphicObject
 {
 
     private static final String path = "res/img/dead/";
-    Team team;
+    private final Team team;
 
     public DeadPieces(StratEdge se, int x, int y, int w, int h, Team t1)
     {

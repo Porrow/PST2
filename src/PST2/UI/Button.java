@@ -13,7 +13,7 @@ public class Button extends GraphicObject
     
     public Button(StratEdge se, Text t, int id)
     {
-        super(se, t.getX(), t.getY(), t.getW(), t.getH());
+        super(se, t.getX() - (se.width-se.getW())/2, t.getY() - (se.height-se.getH())/2, t.getW(), t.getH());
         this.t = t;
         this.id = id;
     }

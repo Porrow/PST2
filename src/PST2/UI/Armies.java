@@ -14,7 +14,7 @@ public class Armies extends GraphicObject
     
     public Armies(StratEdge se, int x, int y) 
     {
-        super(se, x, y, Checker.W, Checker.W, IMGPATH);
+        super(se, x - (se.width-se.getW())/2, y - (se.height-se.getH())/2, Checker.W, Checker.W, IMGPATH);
         game = se.getGame();
     }
     

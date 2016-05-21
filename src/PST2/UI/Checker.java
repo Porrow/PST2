@@ -8,7 +8,7 @@ import static PST2.Game.C;
 public class Checker extends GraphicObject
 {
     private static final String IMGPATH = "res/img/checker/";
-    public static final int W = 800;
+    public static final int W = 560;
     private PGraphics img;
     
     public Checker(StratEdge se, int x, int y)

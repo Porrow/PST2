@@ -94,7 +94,8 @@ public class Promotion extends GraphicObject
                 System.out.println(type);
 
                 SEPiece np = new SEPiece(p.getName(), type, p.getTeam(), p.getImg(), (int)att, (int)def, (int)life, p.getX(), p.getY(), -1, -1);
-                
+                np.setCapacity1(p.getCapacity1());
+                np.setCapacity2(p.getCapacity2());
                 np.pawn(p);
                 se.getGame().getChecker()[p.getY()][p.getX()] = np;
                 

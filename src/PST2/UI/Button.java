@@ -1,6 +1,7 @@
 package PST2.UI;
 
 import PST2.StratEdge;
+import processing.core.PApplet;
 
 public class Button extends GraphicObject
 {   
@@ -11,7 +12,7 @@ public class Button extends GraphicObject
     private int IMG1, IMG2;
     private Text t = null;
     private int img;
-    private int opacity = 80;
+    private int opacity = OPA1;
     
     public Button(StratEdge se, Text t, int id)
     {
@@ -50,6 +51,7 @@ public class Button extends GraphicObject
     @Override
     public void draw() 
     {
+        se.g.imageMode(PApplet.CORNER);
         if(t != null)
         {
             se.fill(255, opacity);
@@ -85,7 +87,7 @@ public class Button extends GraphicObject
             changeState(true);
         else
             changeState(false);
-            
+        
         if(se.getViews()[0].getGO()[2].isOn(x, y) || se.getViews()[0].getGO()[4].isOn(x, y))
             se.getSurface().setCursor(12);                                      //Modification de l'apparence du curseur de la souris lorsque l'on est au-dessus d'un bouton
         else

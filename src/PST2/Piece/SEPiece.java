@@ -1,5 +1,6 @@
 package PST2.Piece;
 
+import PST2.Capacity.Capacity;
 import PST2.Game;
 import PST2.IO.Read;
 import PST2.StratEdge;
@@ -28,10 +29,11 @@ public class SEPiece implements Piece
     private int y;                                                              //Coordonnées y de la pièce (en cellule)
     private boolean alive = true;                                               //Booléen qui indique si la pièce est en vie
     protected boolean firstMove = false;                                        //Détermine si le premier mouvement a été effectué
-    //protected boolean[][] pMoves = new boolean[C][C];                           //Mouvements possibles de la pièce
+    protected Pawn p = null;                                                    //Instance du pion parent (qui a été promu)
+    private Capacity c1,c2;                                                     //Les deux capacités possédées par la pièce
     
     /*Constructeur*/
-    public SEPiece(String NAME, int type, boolean team, int image, int attack, int defense, int life, int x, int y)
+    public SEPiece(String NAME, int type, boolean team, int image, int attack, int defense, int life, int x, int y, int cap1, int cap2)
     {
         this.NAME = NAME;
         this.type = type;
@@ -43,11 +45,14 @@ public class SEPiece implements Piece
         this.x = x;
         this.y = y;
         moves = TABMOVES[type].clone();
+        this.c1 = Capacity.getCapacity(this, cap1);
+        this.c2 = Capacity.getCapacity(this, cap2);
     }
+
     
     public SEPiece(String NAME, int type, boolean team, int image, int x, int y)//Pièce classique
     {
-        this(NAME, type, team, image, 1, 0, 1, x, y);
+        this(NAME, type, team, image, 1, 0, 1, x, y, -1, -1);
     }
     
     /*Méthodes*/
@@ -60,6 +65,11 @@ public class SEPiece implements Piece
         TABUMOVES = r.matrixTextFile(UMOVESFILE);
         TABPIECES = r.matrixTextFile(PIECESFILE);
         TABNAMES = r.file(NAMESFILE);
+    }
+    
+    public void pawn(Pawn p)
+    {
+        this.p = p;
     }
     
     @Override
@@ -76,10 +86,7 @@ public class SEPiece implements Piece
                 testDirection(dir, dist, nUM-1, checker, pMoves);
             }
             else
-            {
                 pMoves[ym][xm] = checker[ym][xm].getTeam() != team;
-                testDirection(dir, dist, 0, checker, pMoves);
-            }
         }
     }
     
@@ -111,8 +118,8 @@ public class SEPiece implements Piece
             if(life > 0)
             {
                 enemy.kill();
-                setPos(x, y);                                                   //On modifie ses coordonnées
-                checker[getY()][getX()] = this;                                 //On déplace la pièce sélectionnée sur la case sélectionnée
+                setPos(x, y);                                                   //On modifie les coordonnées
+                checker[getY()][getX()] = this;                                 //On déplace la pièce sur la case x, y
             }
             else if(enemy.getLife() <= 0)
             {
@@ -125,8 +132,8 @@ public class SEPiece implements Piece
         }
         else
         {
-            setPos(x, y);                                                       //On modifie ses coordonnées
-            checker[getY()][getX()] = this;                                     //On déplace la pièce sélectionnée sur la case sélectionnée
+            setPos(x, y);                                                       //On modifie les coordonnées
+            checker[getY()][getX()] = this;                                     //On déplace la pièce sur la case x, y
         }
     }
     
@@ -139,13 +146,13 @@ public class SEPiece implements Piece
         switch(type)
         {
             case Piece.KING:
-                p = new King(NAME, team, image, attack, defense, life, x, y);
+                p = new King(NAME, team, image, attack, defense, life, x, y, -1, -1);
                 break;
             case Piece.PAWN:
-                p = new Pawn(NAME, team, image, attack, defense, life, x, y);
+                p = new Pawn(NAME, team, image, attack, defense, life, x, y, -1, -1);
                 break;
             default:
-                p = new SEPiece(NAME, type, team, image, attack, defense, life, x, y);
+                p = new SEPiece(NAME, type, team, image, attack, defense, life, x, y, -1, -1);
                 break;
         }
         p.firstMove = firstMove;
@@ -175,6 +182,10 @@ public class SEPiece implements Piece
     public boolean isAlive(){return alive;}
     @Override
     public boolean getFM(){return firstMove;}
+    @Override
+    public Capacity getCapacity1() {return c1;}
+    @Override
+    public Capacity getCapacity2() {return c2;}
     @Override
     public boolean[][] getMoves(Piece[][] checker, boolean saveTheKing)
     {
@@ -209,10 +220,19 @@ public class SEPiece implements Piece
     {
         x = nX; 
         y = nY;
-        if(nX != 0 || nY != 0)
-            firstMove = true;                                                   //Permet de savoir si le pion s'est déjà déplacé
+        //if(nX != 0 || nY != 0)
+        firstMove = true;                                                       //Permet de savoir si le pion s'est déjà déplacé
     }
+    @Override
+    public void setCapacity1(Capacity nc1){c1 = nc1;}
+    @Override
+    public void setCapacity2(Capacity nc2){c2 = nc2;}
     
     @Override
-    public void kill(){alive = false;}
+    public void kill()
+    {
+        if(p != null)
+            p.kill();
+        alive = false;
+    }
 }

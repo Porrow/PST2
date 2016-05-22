@@ -1,5 +1,7 @@
 package PST2.Piece;
 
+import PST2.Capacity.Capacity;
+
 public interface Piece
 {
     public static final int KING = 0, QUEEN = 1, BISHOP = 2;                    //Types
@@ -26,6 +28,8 @@ public interface Piece
     public int getY();
     public boolean isAlive();
     public boolean getFM();
+    public Capacity getCapacity1();
+    public Capacity getCapacity2();
     public boolean[][] getMoves(Piece[][] checker, boolean saveTheKing);
     public Piece clonePiece();
     
@@ -37,5 +41,7 @@ public interface Piece
     public void setDef(int nDef);
     public void setLife(int nLife);
     public void setPos(int nX, int nY);                                         //Modifie la position de la pièce sur (nX, nY) et vérifie que le 1er mouvement n'a pas été effectué
+    public void setCapacity1(Capacity ncap1);
+    public void setCapacity2(Capacity ncap2);
     public void kill();
 }

@@ -29,6 +29,7 @@ public class Description extends GraphicObject
     @Override
     public void draw()
     {
+        se.g.imageMode(PApplet.CORNER);
         image(tabImg[12], 0, 0);                                                //Affiche le background
         if(g.getSelection()!=null)
         {                                             
@@ -39,7 +40,8 @@ public class Description extends GraphicObject
             * l'allignement se fait par la gauche et pas le centre comme 
             * dans celle-ci
             */
-            se.textAlign(PApplet.LEFT);                                    
+            se.textAlign(PApplet.LEFT);     
+            se.g.fill(0);
             se.g.text(g.getSelection().getName(), x + i.width+30, y +size+10);  //Affiche le nom 10 px en dessous du haut du cadre
             se.g.text("Vie :" + g.getSelection().getLife(), 
                     x + i.width+30, y + 2*(size+2)+10);                         //Affiche la vie
@@ -47,6 +49,8 @@ public class Description extends GraphicObject
                     x + i.width+30, y + 3*(size+2)+10);                         //Affiche l'attaque
             se.g.text("Défense :" + g.getSelection().getDef(), 
                     x + i.width+30, y + 4*(size+2)+10);                         //Affiche la Defense
+            se.g.text("Cooldown c1 :" + g.getSelection().getCapacity1().getCurrentCool(), x+i.width+30, y + 5*(size+2)+10);
+            se.g.text("Cooldown c2 :"+ g.getSelection().getCapacity2().getCurrentCool(), x+i.width+30, y + 6*(size+2)+10);
         }
     }
 

@@ -30,7 +30,7 @@ public class StratEdge extends PApplet
     {
         tabView = new View[2];
         tabView[0] = new Menu();
-        tabView[1] = new Game(t1, t2);
+        tabView[1] = new Game();
     }
     
     @Override
@@ -54,9 +54,10 @@ public class StratEdge extends PApplet
         background(0);                                                          //Couleur d'arrière plan dans la fenêtre
         stroke (0);
         
+        initViews();
         t1 = new Team(new int[]{10, 9, 8, 7, 6, 8, 9, 10, 11, 11, 11, 11, 11, 11, 11, 11}, Piece.TEAM1);
         t2 = new Team(new int[]{4, 3, 2, 1, 0, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5}, Piece.TEAM2);
-        initViews();
+        getGame().init(t1, t2);
     }
     
     @Override

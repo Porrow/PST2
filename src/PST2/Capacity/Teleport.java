@@ -1,41 +1,37 @@
 package PST2.Capacity;
 
-import static PST2.Game.C;
 import PST2.Piece.Piece;
 import PST2.StratEdge;
 
-public class Teleport extends Active 
-{
-    public static final int COOL=5;                                             //Cooldown propre à chaque capacité
-    Piece[][] tab;
+public class Teleport extends Capacity {
     
-    public Teleport(StratEdge se) 
-    {
-        super(COOL);
-        tab = se.getGame().getChecker();
+    private static final int COOL=5;                                             //Cooldown propre à chaque capacité
+    private final static int CAST=0;                                             //Temps de Cast
+    private Piece[][] tab;
+
+    public Teleport(Piece p) {
+        super(p,COOL, CAST,true);
+        this.isActive=true;
+        init();
     }
-   
+
     @Override
-    public void power() 
-    {
-        if(isAvailable())
-        {
-            boolean[][] pMoves =getMoves(tab);  
-            
-            cooldown=COOL;
+    public void power() {
+        if (isAvailable()) {        
+            tab=StratEdge.getSE().getGame().getChecker(); 
+//            boolean[][] pmoves=getmoves(tab);
+//            piece.saveTheKing(pmoves);
+            System.out.println("FullPower !");
+            cooldown = COOL;
         }
     }
 
-    public boolean[][] getMoves(Piece[][] checker)
-    {
-        boolean[][] pMoves = new boolean[C][C];  
-        for (int i=0;i<tab.length;++i)                                           //On parcourt chacune des pièces du plateau
-            for (int j=0;j<tab.length;++j)
-                    pMoves[i][j]=(tab[i][j]==null);
-        return pMoves;
+    private boolean[][] getmoves(Piece[][] tab){                                //Retourne un tableau indiquant quelles cases sont vides
+        boolean[][] pmoves = new boolean[tab.length][tab.length];
+        for(int i=0;i<tab.length;++i)
+            for(int j=0;i<tab.length;++j)
+                pmoves[i][j]=(tab[i][j]==null);
+        return pmoves;
     }
-    
-    @Override
-    public void init() {}
 
 }

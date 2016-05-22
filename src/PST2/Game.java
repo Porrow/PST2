@@ -1,5 +1,6 @@
 package PST2;
 
+import PST2.Capacity.Capacity;
 import PST2.Piece.*;
 import PST2.UI.*;
 
@@ -12,7 +13,7 @@ public class Game extends View
     private Piece selection = null;                                             //Pièce sélectionnée
     public Team t1, t2;
     
-    protected Game(Team t1, Team t2)                                            //t1 : team du haut, t2 : team du bas
+    public void init(Team t1, Team t2)
     {
         this.t1 = t1;
         this.t2 = t2;
@@ -27,15 +28,16 @@ public class Game extends View
     public void initGraphicObjects()
     {
         StratEdge se = StratEdge.getSE();
-        tabGO = new GraphicObject[8];
+        tabGO = new GraphicObject[9];
         tabGO[0] = new Background(se, 1);
         tabGO[1] = new DeadPieces(se,(se.getW() - Checker.W) / 4, 0, Checker.W, (se.getH() - Checker.W) / 4, t1);
         tabGO[2] = new DeadPieces(se,(se.getW() - Checker.W) / 4, (Checker.W+(se.getH()-Checker.W)/4 * 3),Checker.W, (se.getH() - Checker.W) / 4, t2);
         tabGO[3] = new Checker(se, (se.getW() - Checker.W) / 4, (se.getH() - Checker.W) / 2);
         tabGO[4] = new Armies(se, tabGO[3].getX(), tabGO[3].getY());
-        tabGO[5] = new Debug(se, se.getW() - 80, 3, 70, 40);
-        tabGO[6] = new Description(se,(se.getW() - Checker.W) + 100, (se.getH()-Checker.W)/2, 2*Checker.W/3, Checker.W, "OldLondon.ttf", 30);
-        tabGO[7] = new Button(se, 10, 10, 0, 1, 2);
+        tabGO[5] = new Description(se,(se.getW() - Checker.W) + 100, (se.getH()-Checker.W)/2, 2*Checker.W/3, Checker.W, "OldLondon.ttf", 30);
+        tabGO[6] = new Promotion(se, 0, 0, tabGO[3].getX(), tabGO[3].getY());
+        tabGO[7] = new Debug(se, se.getW() - 80, 3, 70, 40);
+        tabGO[8] = new Button(se, 10, 10, 0, 1, 2);
     }
     
     public Piece[][] cloneChecker()                                             //Crée une copie du checker
@@ -46,6 +48,15 @@ public class Game extends View
                 if(checker[i][j] != null)
                     clone[i][j] = checker[i][j].clonePiece();
         return clone;
+    }
+    
+    public void promotion(Piece p)
+    {
+        if(p.getType() == Piece.PAWN && (p.getY() == 0 || p.getY() == C-1))
+        {
+            Promotion promo = (Promotion)(tabGO[6]);
+            promo.promote((Pawn)p);
+        }
     }
     
     /*Getters*/
@@ -82,7 +93,7 @@ public class Game extends View
         return false;
     }
     
-    public boolean isCheckAndMat(boolean team)
+    public boolean isLock(boolean team)
     {
         boolean[][] pmoves;
         for(Piece[] ligne : checker)                                            //On parcourt chacune des pièces du plateau
@@ -92,8 +103,8 @@ public class Game extends View
                     pmoves = p.getMoves(checker, true);                         //On récupère les mouvements autorisés de la pièce
                     for(boolean[] bl : pmoves)                                  //On parcourt chaque case du plateau
                         for(boolean b : bl)
-                            if(b)
-                                return false;
+                            if(b)                                               //Si il existe un mouvement
+                                return false;                                   //Il n'y a pas de blocage
                 }
         return true;
     }
@@ -106,15 +117,26 @@ public class Game extends View
         t1.getKing().setCheck(false);
         t2.getKing().setCheck(false);
         turn++;
-        if(isCheck(turn%2 == 1, checker))                                       //Si le roi qui doit jouer est en échec
+        boolean team = turn%2 == 0;
+        for (Capacity c : Capacity.getPassive(team))
         {
-            if(isCheckAndMat(turn%2 == 1))
-                System.out.println("Game Over");
+            c.minusCool();
+            c.power();
+        }
+        if(!team)
+            for (Capacity c : Capacity.getActive())
+                c.minusCool();
+        if(isCheck(team, checker))                                              //Si le roi qui doit jouer est en échec
+        {
+            if(isLock(team))
+                System.out.println("Game Over !");
             System.out.println("Echec !");
-            if(turn%2 != 1)
+            if(!team)
                 t1.getKing().setCheck(true);
             else
                 t2.getKing().setCheck(true);
         }
+        else if(isLock(team))
+            System.out.println("Pat !");
     }
 }

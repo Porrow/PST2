@@ -6,7 +6,7 @@ import processing.core.PFont;
 public class Text extends GraphicObject
 {
     private static final String IMGPATH = "res/font/";
-    private final String text;
+    private String text;
     private final PFont font;
     
     public Text(StratEdge se, int x, int y, int w, int h, int size, String text, String font)
@@ -34,5 +34,5 @@ public class Text extends GraphicObject
     public void mouseMoved(int x, int y){}
     
     public String getText(){return text;}
-    
+    public void setText(String txt){text = txt;}
 }

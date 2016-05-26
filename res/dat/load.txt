@@ -1,3 +1,0 @@
-properties.txt
-piece
-team

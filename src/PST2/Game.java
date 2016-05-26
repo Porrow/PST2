@@ -9,19 +9,27 @@ public class Game extends View
     public static final int C = 8;                                              //Nombre de cases sur une ligne / colonne
     
     private int turn = 0;                                                       //Tour actuel -> détermine qui doit jouer
-    private final Piece[][] checker = new Piece[C][C];                          //Terrain : case vide : null; case non vide : Piece qui est dessus
+    private Piece[][] checker;                                                  //Terrain : case vide : null; case non vide : Piece qui est dessus
     private Piece selection = null;                                             //Pièce sélectionnée
     public Team t1, t2;
     
     public void init(Team t1, Team t2)
     {
+        checker = new Piece[C][C];
         this.t1 = t1;
         this.t2 = t2;
-        for(int i = 0; i < t1.get().length; i++)
-        {
-            checker[i / C][i % C] = t1.get(i);
-            checker[(C - 1) - i / C][i % C] = t2.get(i);
-        }
+        for(Piece p1 : t1.get())
+            checker[p1.getY()][p1.getX()] = p1;
+        for(Piece p2 : t2.get())
+            checker[p2.getY()][p2.getX()] = p2;
+    }
+    
+    public void start(int t1, int t2)
+    {
+        Team team1 = new Team(SEPiece.getTeams()[t1], Piece.TEAM1);             //Création de l'équipe 1
+        Team team2 = new Team(SEPiece.getTeams()[t2], Piece.TEAM2);             //Création de l'équipe 2
+        init(team1, team2);                                                     //Initialisation du checker
+        StratEdge.getSE().setView(2);                                           //Changement de view : le jeu commence
     }
     
     @Override

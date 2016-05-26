@@ -13,6 +13,7 @@ public class SEPiece implements Piece
     private static int[][] TABUMOVES;                                           //Données contenues dans UMOVESFILE
     private static int[][] TABPIECES;                                           //Données contenues dans PIECESFILE
     private static String[] TABNAMES;                                           //Données contenues dans NAMESFILE
+    private static int[][] TABTEAMS;                                            //Données contenues dans TEAMSFILE
     
     /*Constantes non-static*/
     private final String NAME;                                                  //Nom de la pièce
@@ -52,7 +53,7 @@ public class SEPiece implements Piece
     
     public SEPiece(String NAME, int type, boolean team, int image, int x, int y)//Pièce classique
     {
-        this(NAME, type, team, image, 1, 0, 1, x, y, -1, -1);
+        this(NAME, type, team, image, 1, 0, 1, x, y, 0, 0);
     }
     
     /*Méthodes*/
@@ -65,6 +66,7 @@ public class SEPiece implements Piece
         TABUMOVES = r.matrixTextFile(UMOVESFILE);
         TABPIECES = r.matrixTextFile(PIECESFILE);
         TABNAMES = r.file(NAMESFILE);
+        TABTEAMS = r.matrixTextFile(TEAMSFILE);
     }
     
     public void pawn(Pawn p)
@@ -110,7 +112,7 @@ public class SEPiece implements Piece
     public void move(int x, int y, Piece[][] checker)
     {
         checker[getY()][getX()] = null;                                         //On supprime la pièce de la case où elle se trouve
-        if(checker[y][x]!=null)
+        if(checker[y][x] != null)
         {
             Piece enemy = checker[y][x];
             life -= enemy.getDef();
@@ -201,6 +203,8 @@ public class SEPiece implements Piece
     
     public static String[] getNames(){return TABNAMES;}
     
+    public static int[][] getTeams(){return TABTEAMS;}
+    
     /*Setters*/
     
     @Override
@@ -220,13 +224,15 @@ public class SEPiece implements Piece
     {
         x = nX; 
         y = nY;
-        //if(nX != 0 || nY != 0)
         firstMove = true;                                                       //Permet de savoir si le pion s'est déjà déplacé
     }
     @Override
     public void setCapacity1(Capacity nc1){c1 = nc1;}
     @Override
     public void setCapacity2(Capacity nc2){c2 = nc2;}
+    
+    @Override
+    public void revive(){alive=true;}
     
     @Override
     public void kill()

@@ -8,7 +8,7 @@ public class Rotate extends Capacity{
     private final static int CAST = 7;                                          //Temps de Cast propre à chaque capacité
     
     public Rotate(Piece piece, int cooldown, int cast, int id, boolean active) {
-        super(piece, COOL, CAST, id, active);
+        super(piece, COOL, CAST, id, active,"Rotation du plateau");
     }
 
     @Override

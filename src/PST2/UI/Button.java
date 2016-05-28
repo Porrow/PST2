@@ -9,7 +9,7 @@ public class Button extends GraphicObject
     private static final String IMGPATH = "res/img/button/";
     
     private final int ID;
-    private int OPA1;
+    private int OPA1=80;
     private final int OPA2 = 190;
     private int IMG1, IMG2;
     private Text t = null;
@@ -21,7 +21,6 @@ public class Button extends GraphicObject
         super(se, t.getX() - (se.width - se.getW()) / 2, t.getY() - (se.height - se.getH()) / 2, t.getW(), t.getH());
         this.t = t;
         this.ID = id;
-        OPA1=80;
     }
 
     public Button(StratEdge se, int x, int y, int img1, int img2, int id) 
@@ -32,7 +31,6 @@ public class Button extends GraphicObject
         this.w = tabImg[img1].width;
         this.h = tabImg[img1].height;
         this.ID = id;
-        OPA1=80;
     }
 
     public Button(StratEdge se, int x, int y, int w, int h, int id, int op) 

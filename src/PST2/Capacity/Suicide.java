@@ -11,7 +11,7 @@ public class Suicide extends Capacity {
     private final int DAMAGE =50;
 
     public Suicide(Piece piece,int i) {
-        super(piece, COOL, CAST,i, true);
+        super(piece, COOL, CAST,i, true,"Explosion Suicide ");
         init();
     }
 
@@ -27,6 +27,8 @@ public class Suicide extends Capacity {
             }
         }
         piece.kill();
+        piece.setLife(0);
+        checker[piece.getY()][piece.getX()]=null;
         StratEdge.getSE().getGame().setSelection(null);
         StratEdge.getSE().getGame().setTurn();
     }

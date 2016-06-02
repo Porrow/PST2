@@ -58,6 +58,7 @@ public class StratEdge extends PApplet
         
         frameRate(FPS);
         surface.setTitle(TITLE);                                                //Modifie le titre de la fen
+        surface.setIcon(loadImage(ICONPATH));
         
         background(0);                                                          //Couleur d'arrière plan dans la fenêtre
         stroke (0);

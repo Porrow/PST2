@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 
 public class Connexion extends Thread
 {
-    private static final int time = 100;                                        //Temps entre chaque envoie/réception requête
+    private static final int time = 500;                                        //Temps entre chaque envoie/réception requête
     
     private Socket connexion;
     private PrintWriter writer = null;

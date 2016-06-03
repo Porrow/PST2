@@ -1,10 +1,13 @@
 package PST2.Piece;
 
+import static PST2.Game.C;
+import static PST2.UI.Checker.W;
+
 import PST2.Capacity.Capacity;
 import PST2.Game;
 import PST2.IO.Read;
 import PST2.StratEdge;
-import static PST2.Game.C;
+import PST2.UI.Animation;
 
 public class SEPiece implements Piece
 {
@@ -33,6 +36,10 @@ public class SEPiece implements Piece
     protected Pawn p = null;                                                    //Instance du pion parent (qui a été promu)
     private Capacity c1,c2;                                                     //Les deux capacités possédées par la pièce
     private final int lifemax;
+    public float x1, y1;                                                        //Coordonnées de la Pièce en pixel !
+    public float[] vect = new float[2];
+    public float d;
+    public int cx, cy;
     
     /*Constructeur*/
     public SEPiece(String NAME, int type, boolean team, int image, int attack, int defense, int life, int x, int y, int cap1, int cap2)
@@ -47,7 +54,7 @@ public class SEPiece implements Piece
         this.x = x;
         this.y = y;
         moves = TABMOVES[type].clone();
-        this.lifemax=life;
+        this.lifemax = life;
         this.c1 = Capacity.getCapacity(this, cap1);
         this.c2 = Capacity.getCapacity(this, cap2);
     }
@@ -74,6 +81,38 @@ public class SEPiece implements Piece
     public void pawn(Pawn p)
     {
         this.p = p;
+    }
+    
+    @Override
+    public void setAnim(int cx, int cy)                                         //Prend en paramètre les coordonnées de la case de destination
+    {
+        this.cx = cx;
+        this.cy = cy;
+        x1 = W/C * x;
+        y1 = W/C * y;
+        float x2 = W/C * cx;
+        float y2 = W/C * cy;
+        d = getDistance(x1, y1, x2, y2);
+        vect[0] = (x1 - x2) / Animation.TIME;
+        vect[1] = (y1 - y2) / Animation.TIME;
+        Animation.p = this;
+    }
+    
+    @Override
+    public void resetAnim()
+    {
+        float x2 = W/C * cx;
+        float y2 = W/C * cy;
+        d = getDistance(x1, y1, x2, y2);
+        vect[0] = (x1 - x2) / Animation.TIME;
+        vect[1] = (y1 - y2) / Animation.TIME;
+    }
+    
+    public float getDistance(float x1, float y1, float x2, float y2) 
+    {
+        float vx = Math.abs(x1 - x2);
+        float vy = Math.abs(y1 - y2);
+        return (float) (Math.sqrt(vx * vx + vy * vy));
     }
     
     @Override

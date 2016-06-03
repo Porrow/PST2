@@ -30,7 +30,7 @@ public class Text extends GraphicObject
             se.fill(coul);
         else
             se.fill(200, 0, 0);
-        text(text, w/2, h/2);
+        text(text, w/2, 3*h/5);
     }
 
     @Override

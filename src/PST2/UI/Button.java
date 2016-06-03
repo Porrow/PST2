@@ -9,7 +9,7 @@ public class Button extends GraphicObject
     private static final String IMGPATH = "res/img/button/";
     
     private final int ID;
-    private int OPA1=80;
+    private int OPA1 = 80;
     private final int OPA2 = 190;
     private int IMG1, IMG2;
     private Text t = null;
@@ -33,7 +33,7 @@ public class Button extends GraphicObject
         this.ID = id;
     }
 
-    public Button(StratEdge se, int x, int y, int w, int h, int id, int op) 
+    public Button(StratEdge se, int x, int y, int w, int h, int id, int op)
     {
         super(se, x, y, w, h);
         this.ID = id;

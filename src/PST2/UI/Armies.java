@@ -68,7 +68,7 @@ public class Armies extends GraphicObject
     public void mousePressed(int x, int y)                                      //Gestion des clics de souris
     {
         Promotion promo = (Promotion)game.getGO()[6];
-        if(!promo.isVisible())
+        if(!promo.isVisible() && Animation.p == null)
         {
             int rx = getRX(x), ry = getRY(y);                                   //On récupère les coordonnées de la souris relativement au GO
             Piece selec = game.getSelection();                                  //On récupère la pièce sélectionnée
@@ -81,15 +81,11 @@ public class Armies extends GraphicObject
             pMoves = selec.getMoves(game.getChecker(), true);                   //On récupère les mouvements potentiels de la sélection
             if(pMoves[ry*C / h][rx*C / w])                                      //Si le clic est sur une case où le mouvements est autorisé...
             {
-                if(Connexion.state == 3) 
-                    Connexion.send(Connexion.RACTION, selec.getX()+" "+selec.getY()+" "+rx*C / w+" "+ry*C / h);
-                selec.move(rx*C / w, ry*C / h, game.getChecker());              //On déplace la pièce sur la bonne case
-                game.promotion(selec);                                          //Tentative de promotion
+                selec.setAnim(rx*C / w, ry*C / h);
+                if(Connexion.state == 3)
+                    Connexion.send(Connexion.RACTION, selec.getX()+" "+selec.getY()+" "+rx*C/w+" "+ry*C/h);
                 game.setSelection(null);                                        //On annule la sélection
-                if(!promo.isVisible())
-                {
-                    game.setTurn();                                             //On passe au tour suivant
-                }
+                game.getChecker()[selec.getY()][selec.getX()] = null;
             }
             else
                 changeSelection(nSelec);                                        //On modifie la sélection

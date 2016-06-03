@@ -16,6 +16,8 @@ public interface Piece
     public void testDirection(int dir, int dist, int nUM, Piece[][] checker, boolean[][] pMoves);   
     public void move(int x, int y, Piece[][] checker);                          //Déplace la pièce sur le terrain checker aux coordonnées (x, y)
     public void saveTheKing(boolean[][] pMoves);                                //Supprime des déplacements lorsque le roi est en échec
+    public void setAnim(int cx, int cy);
+    public void resetAnim();
     
     /*Getters*/
     public String getName();

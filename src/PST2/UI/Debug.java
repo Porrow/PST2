@@ -5,7 +5,7 @@ import processing.core.PFont;
 
 public class Debug extends GraphicObject
 {
-    private final boolean DEBUG = true;                                         //True : affiche des informations de debuggage et de performance
+    private final boolean DEBUG = false;                                         //True : affiche des informations de debuggage et de performance
     PFont font;
 
     public Debug(StratEdge se, int x, int y, int w, int h)

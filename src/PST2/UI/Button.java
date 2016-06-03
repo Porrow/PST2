@@ -60,6 +60,8 @@ public class Button extends GraphicObject
     @Override
     public void draw() 
     {
+        se.g.stroke(0);
+        se.g.strokeWeight(2);
         se.g.imageMode(PApplet.CORNER);
         if(t != null)
         {

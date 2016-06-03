@@ -24,13 +24,19 @@ public class Game extends View {
             checker[p2.getY()][p2.getX()] = p2;
     }
 
-    public void start(int te1, int te2) {
+    public void start(int te1, int te2)
+    {
         Capacity.getActive().removeAll(Capacity.getActive());
         Capacity.getPassive(true).removeAll(Capacity.getPassive(true));
         Capacity.getPassive(false).removeAll(Capacity.getPassive(false));
         Team team1 = new Team(SEPiece.getTeams()[te1], Piece.TEAM1);            //Création de l'équipe 1
         Team team2 = new Team(SEPiece.getTeams()[te2], Piece.TEAM2);            //Création de l'équipe 2
-        init(team1, team2);                                                     //Initialisation du checker
+        reinit(team1, team2);
+    }
+    
+    public void reinit(Team t1, Team t2)
+    {
+        init(t1, t2);                                                           //Initialisation du checker
         if (tabGO != null)                                                      //Si on a déjà lancé une partie
         {
             initEssential();
@@ -53,7 +59,8 @@ public class Game extends View {
     }
 
     @Override
-    public void initGraphicObjects() {
+    public void initGraphicObjects()
+    {
         StratEdge se = StratEdge.getSE();
         tabGO = new GraphicObject[13];
         tabGO[0] = new Background(se, 1);
@@ -80,6 +87,7 @@ public class Game extends View {
 
     public void promotion(Piece p)
     {
+        if(Connexion.state == 3 && p.getTeam() != t1.getSide())return;
         if(p.getType() == Piece.PAWN && (p.getY() == 0 || p.getY() == C - 1))
         {
             Promotion promo = (Promotion) (tabGO[6]);

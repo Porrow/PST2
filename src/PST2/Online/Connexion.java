@@ -1,16 +1,17 @@
 package PST2.Online;
 
+import PST2.Capacity.Capacity;
 import PST2.Game;
-import PST2.Piece.SEPiece;
-import PST2.Piece.Team;
+import PST2.Piece.*;
 import PST2.StratEdge;
+import PST2.UI.Text;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Connexion extends Thread
 {
-    private static final int time = 500;                                        //Temps entre chaque envoie/réception requête
+    private static final int time = 10;                                        //Temps entre chaque envoie/réception requête
     
     private Socket connexion;
     private PrintWriter writer = null;
@@ -79,8 +80,12 @@ public class Connexion extends Thread
                     case "ACTION":
                         int[] act = StratEdge.r.string2Int(message[1]);
                         Game g = StratEdge.getSE().getGame();
-                        g.getChecker()[act[1]][act[0]].move(act[2], act[3], g.getChecker());
-                        g.setTurn();
+                        Piece selec = g.getChecker()[act[1]][act[0]];
+                        selec.setAnim(act[2], act[3]);
+                        //g.getChecker()[act[1]][act[0]].move(act[2], act[3], g.getChecker());
+                        //g.setTurn();
+                        g.setSelection(null);                                   //On annule la sélection
+                        g.getChecker()[selec.getY()][selec.getX()] = null;
                         toSend = RNONE;
                         break;
                     case "WIN":
@@ -116,22 +121,28 @@ public class Connexion extends Thread
     private void initGame(String mes)
     {
         Team t1, t2;
+        StratEdge.getSE().getGame().getGO();
+        Capacity.getActive().removeAll(Capacity.getActive());
+        Capacity.getPassive(true).removeAll(Capacity.getPassive(true));
+        Capacity.getPassive(false).removeAll(Capacity.getPassive(false));
         boolean side = mes.substring(0, 1).equals("1");
         if(mes.length() > 1)
         {
             int[] team = StratEdge.r.string2Int(mes.substring(2));
             t1 = new Team(StratEdge.team, side);
             t2 = new Team(team, !side);
-            StratEdge.getSE().getGame().init(t1, t2);
-            StratEdge.getSE().setView(2);
         }
         else
         {
             t1 = new Team(SEPiece.getTeams()[0], side);
             t2 = new Team(SEPiece.getTeams()[0], !side);
-            StratEdge.getSE().getGame().init(t1, t2);
-            StratEdge.getSE().setView(2);
         }
+        StratEdge.getSE().getGame().reinit(t1, t2);
+        Text t = (Text) StratEdge.getSE().getGame().getGO()[11];
+        if(t1.getSide())
+            t.setText("C'est à vous de jouer");
+        else
+            t.setText("C'est à l'adversaire de jouer");      
     }
     
     public static boolean send(String request, String param)

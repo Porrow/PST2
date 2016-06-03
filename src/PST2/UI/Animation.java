@@ -38,10 +38,10 @@ public class Animation extends GraphicObject implements Runnable
                     p.resetAnim();
                     if(p.d < COLLI)
                     {
-                        p.move(p.cx, p.cy, g.getChecker());                 //On déplace la pièce sur la bonne case
-                        g.promotion(p);                                     //Tentative de promotion
+                        p.move(p.cx, p.cy, g.getChecker());                     //On déplace la pièce sur la bonne case
+                        g.promotion(p);                                         //Tentative de promotion
                         if(!promo.isVisible())
-                            g.setTurn();                                    //On passe au tour suivant
+                            g.setTurn();                                        //On passe au tour suivant
                         p = null;
                     }
                 }

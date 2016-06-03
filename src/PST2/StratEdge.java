@@ -25,7 +25,7 @@ public class StratEdge extends PApplet
     private static StratEdge se;                                                //Instance courante de StratEdge
     public static Read r;
     private Connexion conn;
-    public static int[] team = {10, 9, 8, 7, 6, 8, 9, 10, 11, 11, 11, 11, 11, 11, 11, 11};
+    public static int[] team = {16, 15, 14, 13, 12, 14, 15, 16, 17, 17, 17, 17, 17, 17, 17, 17};
 
     public static void main(String[] args)
     {
